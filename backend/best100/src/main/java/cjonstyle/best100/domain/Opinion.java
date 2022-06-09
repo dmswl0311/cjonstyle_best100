@@ -22,8 +22,8 @@ public class Opinion {
     @Column(name="opinion_item_id")
     private String itemId; //상품 코드
 
-    @Column(name="opinion_user_id")
-    private Long userId; // 회원 아이디
+    @Column(name="opinion_pwd")
+    private String pwd; // 의견 비밀번호
 
     @Column(name="opinion_contents")
     private String contents; // 한줄 의견 내용
@@ -42,7 +42,7 @@ public class Opinion {
         return builder()
                 .id(res.getId())
                 .itemId(res.getItemId())
-                .userId(res.getUserId())
+                .pwd(res.getPwd())
                 .contents(res.getContents())
                 .date(res.getDate())
                 .like(res.getLike())

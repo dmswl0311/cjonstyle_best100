@@ -23,8 +23,8 @@ public class OpinionController {
 
     // 상품에 대한 모든 한줄 의견
     @GetMapping("/{item_id}")
-    public ResponseEntity<List<OpinionRes>> getAllOpinion(@PathVariable("item_id") String itemId){
-        List<OpinionRes> res=service.getAllOpinion(itemId);
+    public ResponseEntity<List<OpinionRes>> getAllOpinion(@PathVariable("item_id") String itemId) {
+        List<OpinionRes> res = service.getAllOpinion(itemId);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 

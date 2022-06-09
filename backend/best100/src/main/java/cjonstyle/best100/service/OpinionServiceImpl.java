@@ -16,7 +16,7 @@ public class OpinionServiceImpl implements OpinionService{
 
     @Override
     public List<OpinionRes> getAllOpinion(String itemId) {
-        List<Opinion> opinions=repo.findAllByItemId(itemId);
+        List<Opinion> opinions=repo.findAllByItemIdOrderByDate(itemId);
         return opinions.stream().map(OpinionRes::of).collect(Collectors.toList());
     }
 }

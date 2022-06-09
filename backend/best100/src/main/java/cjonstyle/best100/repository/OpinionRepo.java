@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface OpinionRepo extends JpaRepository<Opinion,Long> {
-    List<Opinion> findAllByItemId(String itemId);
+    List<Opinion> findAllByItemIdOrderByDate(String itemId);
 }
