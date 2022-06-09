@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 @Slf4j
 public class ApiController {
     private final ApiServiceImpl service;

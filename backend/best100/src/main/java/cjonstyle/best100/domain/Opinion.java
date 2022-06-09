@@ -1,5 +1,6 @@
 package cjonstyle.best100.domain;
 
+import cjonstyle.best100.domain.dto.OpinionReq;
 import cjonstyle.best100.domain.dto.OpinionRes;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
@@ -47,6 +48,14 @@ public class Opinion {
                 .date(res.getDate())
                 .like(res.getLike())
                 .hate(res.getHate())
+                .build();
+    }
+    public static Opinion of(String itemId, OpinionReq req){
+        return builder()
+                .itemId(itemId)
+                .pwd(req.getPwd())
+                .contents(req.getContents())
+                .date(LocalDate.now())
                 .build();
     }
 }

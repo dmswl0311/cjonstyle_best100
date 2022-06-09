@@ -1,6 +1,7 @@
 package cjonstyle.best100.service;
 
 import cjonstyle.best100.domain.Opinion;
+import cjonstyle.best100.domain.dto.OpinionReq;
 import cjonstyle.best100.domain.dto.OpinionRes;
 import cjonstyle.best100.repository.OpinionRepo;
 import lombok.RequiredArgsConstructor;
@@ -11,12 +12,20 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class OpinionServiceImpl implements OpinionService{
+public class OpinionServiceImpl implements OpinionService {
     private final OpinionRepo repo;
 
     @Override
     public List<OpinionRes> getAllOpinion(String itemId) {
-        List<Opinion> opinions=repo.findAllByItemIdOrderByDate(itemId);
+        List<Opinion> opinions = repo.findAllByItemIdOrderByDate(itemId);
         return opinions.stream().map(OpinionRes::of).collect(Collectors.toList());
     }
+
+    @Override
+    public OpinionRes saveOpinion(String itemId, OpinionReq req) {
+        Opinion opinion = repo.save(Opinion.of(itemId, req));
+        return OpinionRes.of(opinion);
+    }
+
+
 }

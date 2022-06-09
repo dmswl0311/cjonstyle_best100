@@ -1,6 +1,7 @@
 package cjonstyle.best100.repository;
 
 import cjonstyle.best100.domain.Opinion;
+import cjonstyle.best100.domain.dto.OpinionReq;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
