@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -38,6 +37,13 @@ public class OpinionController {
     @PatchMapping("/{opinion_id}")
     public ResponseEntity<OpinionRes> updateOpinion(@PathVariable("opinion_id") Long opinionId, @RequestBody OpinionReq req) {
         OpinionRes res = service.updateOpinion(opinionId, req);
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    // 상품에 대한 한줄 의견 삭제
+    @DeleteMapping("/{opinion_id}")
+    public ResponseEntity<Boolean> deleteOpinion(@PathVariable("opinion_id") Long opinionId, @RequestBody OpinionReq req) {
+        boolean res = service.deleteOpinion(opinionId, req);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 

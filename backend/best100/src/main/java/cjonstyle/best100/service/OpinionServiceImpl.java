@@ -40,5 +40,18 @@ public class OpinionServiceImpl implements OpinionService {
         return OpinionRes.of(updateOpinion);
     }
 
+    @Override
+    public boolean deleteOpinion(Long opinionId, OpinionReq req) {
+        boolean res=false;
+        Optional<Opinion> opinion=repo.findById(opinionId);
+        if(!opinion.isPresent()) throw new NullPointerException();
+        String reqPwd=req.getPwd();
+        String oriPwd=opinion.get().getPwd();
+        if(!reqPwd.equals(oriPwd)) throw new NullPointerException();
+        repo.delete(opinion.get());
+        res=true;
+        return res;
+    }
+
 
 }

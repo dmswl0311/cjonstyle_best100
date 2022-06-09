@@ -9,4 +9,5 @@ public interface OpinionService {
     List<OpinionRes> getAllOpinion(String itemId);
     OpinionRes saveOpinion(String itemId, OpinionReq req);
     OpinionRes updateOpinion(Long opinionId, OpinionReq req);
+    boolean deleteOpinion(Long opinionId, OpinionReq req);
 }
