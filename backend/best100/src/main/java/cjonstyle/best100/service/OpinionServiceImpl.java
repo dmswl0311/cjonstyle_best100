@@ -53,5 +53,13 @@ public class OpinionServiceImpl implements OpinionService {
         return res;
     }
 
+    @Override
+    public OpinionRes updateLikeOpinion(Long opinionId) {
+        Optional<Opinion> opinion=repo.findById(opinionId);
+        if(!opinion.isPresent()) throw new NullPointerException();
+        Opinion updateOpinion=repo.save(Opinion.likeOf(OpinionRes.of(opinion.get())));
+        return OpinionRes.of(updateOpinion);
+    }
+
 
 }

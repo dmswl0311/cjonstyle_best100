@@ -71,4 +71,15 @@ public class Opinion {
                 .build();
     }
 
+    public static Opinion likeOf(OpinionRes res){
+        return builder()
+                .id(res.getId())
+                .itemId(res.getItemId())
+                .pwd(res.getPwd())
+                .contents(res.getContents())
+                .date(res.getDate())
+                .like(res.getLike()+1)
+                .hate(res.getHate())
+                .build();
+    }
 }

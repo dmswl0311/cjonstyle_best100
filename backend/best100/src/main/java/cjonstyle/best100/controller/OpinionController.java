@@ -46,4 +46,11 @@ public class OpinionController {
         boolean res = service.deleteOpinion(opinionId, req);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
+
+    // 상품에 대한 좋아요
+    @PatchMapping("/like/{opinion_id}")
+    public ResponseEntity<OpinionRes> updateLikeOpinion(@PathVariable("opinion_id") Long opinionId) {
+        OpinionRes res = service.updateLikeOpinion(opinionId);
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
 }
