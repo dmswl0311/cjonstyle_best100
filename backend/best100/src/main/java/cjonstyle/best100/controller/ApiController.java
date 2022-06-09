@@ -19,7 +19,8 @@ import java.util.List;
 public class ApiController {
     private final ApiServiceImpl service;
 
-    //    오늘자 BEST 아이템을 DB에 저장
+    //  오늘자 BEST 아이템을 DB에 저장
+    //  하루에 한번만 실행
     @GetMapping("/best-item")
     public ResponseEntity<Boolean> saveAllBestItem() {
         boolean res = service.saveAllBestItem();

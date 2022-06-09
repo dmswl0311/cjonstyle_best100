@@ -46,5 +46,4 @@ public class OpinionController {
         boolean res = service.deleteOpinion(opinionId, req);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
-
 }
