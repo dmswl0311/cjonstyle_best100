@@ -35,3 +35,7 @@ spring:
     level:
       org.hibernate.SQL: debug
       org.hibernate.type: trace
+
+server:
+  servlet:
+    context-path: /rest
