@@ -22,7 +22,7 @@ public class OpinionRes {
     private int like; // 좋아요
     private int hate;  // 싫어요
 
-    public static OpinionRes of(Opinion opinion){
+    public static OpinionRes of(Opinion opinion) {
         return builder()
                 .id(opinion.getId())
                 .itemId(opinion.getItemId())

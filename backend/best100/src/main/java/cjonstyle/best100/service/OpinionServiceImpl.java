@@ -31,12 +31,15 @@ public class OpinionServiceImpl implements OpinionService {
 
     @Override
     public OpinionRes updateOpinion(Long opinionId, OpinionReq req) {
+        // 중복되는 부분
         Optional<Opinion> opinion = repo.findById(opinionId);
         if (!opinion.isPresent()) throw new NullPointerException();
         String reqPwd = req.getPwd();
         String oriPwd = opinion.get().getPwd();
         if (!reqPwd.equals(oriPwd)) throw new NullPointerException();
-        Opinion updateOpinion = repo.save(Opinion.updateOf(OpinionRes.of(opinion.get()), req.getContents()));
+        OpinionRes dto=OpinionRes.of(opinion.get());
+        dto.setContents(req.getContents());
+        Opinion updateOpinion = repo.save(Opinion.of(dto));
         return OpinionRes.of(updateOpinion);
     }
 
@@ -48,10 +51,10 @@ public class OpinionServiceImpl implements OpinionService {
         String reqPwd = req.getPwd();
         String oriPwd = opinion.get().getPwd();
         if (!reqPwd.equals(oriPwd)) throw new NullPointerException();
-        try{
+        try {
             repo.delete(opinion.get());
-            res=true;
-        }catch(IllegalArgumentException e){
+            res = true;
+        } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
         return res;
@@ -61,11 +64,11 @@ public class OpinionServiceImpl implements OpinionService {
     public OpinionRes updateExprOpinion(Long opinionId, String expr) {
         Optional<Opinion> opinion = repo.findById(opinionId);
         if (!opinion.isPresent()) throw new NullPointerException();
-        OpinionRes dto=OpinionRes.of(opinion.get());
+        OpinionRes dto = OpinionRes.of(opinion.get());
         if ("like".equals(expr)) {
-            dto.setLike(dto.getLike()+1);
+            dto.setLike(dto.getLike() + 1);
         } else if ("hate".equals(expr)) {
-            dto.setHate(dto.getHate()+1);
+            dto.setHate(dto.getHate() + 1);
         }
         Opinion updateOpinion = repo.save(Opinion.of(dto));
         return OpinionRes.of(updateOpinion);
