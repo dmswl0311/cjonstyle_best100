@@ -61,14 +61,13 @@ public class OpinionServiceImpl implements OpinionService {
     public OpinionRes updateExprOpinion(Long opinionId, String expr) {
         Optional<Opinion> opinion = repo.findById(opinionId);
         if (!opinion.isPresent()) throw new NullPointerException();
-        Opinion updateOpinion = null;
+        OpinionRes dto=OpinionRes.of(opinion.get());
         if ("like".equals(expr)) {
-            updateOpinion = repo.save(Opinion.likeOf(OpinionRes.of(opinion.get())));
+            dto.setLike(dto.getLike()+1);
         } else if ("hate".equals(expr)) {
-            updateOpinion = repo.save(Opinion.hateOf(OpinionRes.of(opinion.get())));
+            dto.setHate(dto.getHate()+1);
         }
+        Opinion updateOpinion = repo.save(Opinion.of(dto));
         return OpinionRes.of(updateOpinion);
     }
-
-
 }
