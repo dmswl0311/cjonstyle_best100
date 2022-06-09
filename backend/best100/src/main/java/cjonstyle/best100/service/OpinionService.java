@@ -10,5 +10,5 @@ public interface OpinionService {
     OpinionRes saveOpinion(String itemId, OpinionReq req);
     OpinionRes updateOpinion(Long opinionId, OpinionReq req);
     boolean deleteOpinion(Long opinionId, OpinionReq req);
-    OpinionRes updateLikeOpinion(Long opinionId);
+    OpinionRes updateExprOpinion(Long opinionId, String expr);
 }

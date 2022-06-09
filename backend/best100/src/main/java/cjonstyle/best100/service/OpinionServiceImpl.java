@@ -31,33 +31,42 @@ public class OpinionServiceImpl implements OpinionService {
 
     @Override
     public OpinionRes updateOpinion(Long opinionId, OpinionReq req) {
-        Optional<Opinion> opinion=repo.findById(opinionId);
-        if(!opinion.isPresent()) throw new NullPointerException();
-        String reqPwd=req.getPwd();
-        String oriPwd=opinion.get().getPwd();
-        if(!reqPwd.equals(oriPwd)) throw new NullPointerException();
-        Opinion updateOpinion=repo.save(Opinion.updateOf(OpinionRes.of(opinion.get()),req.getContents()));
+        Optional<Opinion> opinion = repo.findById(opinionId);
+        if (!opinion.isPresent()) throw new NullPointerException();
+        String reqPwd = req.getPwd();
+        String oriPwd = opinion.get().getPwd();
+        if (!reqPwd.equals(oriPwd)) throw new NullPointerException();
+        Opinion updateOpinion = repo.save(Opinion.updateOf(OpinionRes.of(opinion.get()), req.getContents()));
         return OpinionRes.of(updateOpinion);
     }
 
     @Override
     public boolean deleteOpinion(Long opinionId, OpinionReq req) {
-        boolean res=false;
-        Optional<Opinion> opinion=repo.findById(opinionId);
-        if(!opinion.isPresent()) throw new NullPointerException();
-        String reqPwd=req.getPwd();
-        String oriPwd=opinion.get().getPwd();
-        if(!reqPwd.equals(oriPwd)) throw new NullPointerException();
-        repo.delete(opinion.get());
-        res=true;
+        boolean res = false;
+        Optional<Opinion> opinion = repo.findById(opinionId);
+        if (!opinion.isPresent()) throw new NullPointerException();
+        String reqPwd = req.getPwd();
+        String oriPwd = opinion.get().getPwd();
+        if (!reqPwd.equals(oriPwd)) throw new NullPointerException();
+        try{
+            repo.delete(opinion.get());
+            res=true;
+        }catch(IllegalArgumentException e){
+            e.printStackTrace();
+        }
         return res;
     }
 
     @Override
-    public OpinionRes updateLikeOpinion(Long opinionId) {
-        Optional<Opinion> opinion=repo.findById(opinionId);
-        if(!opinion.isPresent()) throw new NullPointerException();
-        Opinion updateOpinion=repo.save(Opinion.likeOf(OpinionRes.of(opinion.get())));
+    public OpinionRes updateExprOpinion(Long opinionId, String expr) {
+        Optional<Opinion> opinion = repo.findById(opinionId);
+        if (!opinion.isPresent()) throw new NullPointerException();
+        Opinion updateOpinion = null;
+        if ("like".equals(expr)) {
+            updateOpinion = repo.save(Opinion.likeOf(OpinionRes.of(opinion.get())));
+        } else if ("hate".equals(expr)) {
+            updateOpinion = repo.save(Opinion.hateOf(OpinionRes.of(opinion.get())));
+        }
         return OpinionRes.of(updateOpinion);
     }
 

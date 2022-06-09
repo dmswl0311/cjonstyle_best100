@@ -47,10 +47,14 @@ public class OpinionController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
-    // 상품에 대한 좋아요
-    @PatchMapping("/like/{opinion_id}")
-    public ResponseEntity<OpinionRes> updateLikeOpinion(@PathVariable("opinion_id") Long opinionId) {
-        OpinionRes res = service.updateLikeOpinion(opinionId);
+    /**  상품에 대한 좋아요 or 싫어요
+     * expr
+     * like: 좋아요
+     * hate: 싫어요
+     */
+    @PatchMapping("/expr/{opinion_id}")
+    public ResponseEntity<OpinionRes> updateExprOpinion(@PathVariable("opinion_id") Long opinionId, @RequestParam("expr") String expr) {
+        OpinionRes res = service.updateExprOpinion(opinionId, expr);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 }

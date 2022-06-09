@@ -82,4 +82,15 @@ public class Opinion {
                 .hate(res.getHate())
                 .build();
     }
+    public static Opinion hateOf(OpinionRes res){
+        return builder()
+                .id(res.getId())
+                .itemId(res.getItemId())
+                .pwd(res.getPwd())
+                .contents(res.getContents())
+                .date(res.getDate())
+                .like(res.getLike())
+                .hate(res.getHate()+1)
+                .build();
+    }
 }
