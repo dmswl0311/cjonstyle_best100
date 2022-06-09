@@ -58,4 +58,17 @@ public class Opinion {
                 .date(LocalDate.now())
                 .build();
     }
+
+    public static Opinion updateOf(OpinionRes res, String contents){
+        return builder()
+                .id(res.getId())
+                .itemId(res.getItemId())
+                .pwd(res.getPwd())
+                .contents(contents)
+                .date(res.getDate())
+                .like(res.getLike())
+                .hate(res.getHate())
+                .build();
+    }
+
 }

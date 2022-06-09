@@ -8,4 +8,5 @@ import java.util.List;
 public interface OpinionService {
     List<OpinionRes> getAllOpinion(String itemId);
     OpinionRes saveOpinion(String itemId, OpinionReq req);
+    OpinionRes updateOpinion(Long opinionId, OpinionReq req);
 }

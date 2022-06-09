@@ -34,4 +34,11 @@ public class OpinionController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
+    // 상품에 대한 한줄 의견 수정
+    @PatchMapping("/{opinion_id}")
+    public ResponseEntity<OpinionRes> updateOpinion(@PathVariable("opinion_id") Long opinionId, @RequestBody OpinionReq req) {
+        OpinionRes res = service.updateOpinion(opinionId, req);
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
 }
