@@ -11,12 +11,16 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -110,5 +114,24 @@ public class ApiServiceImpl implements ApiService {
         LocalDate preview=LocalDate.now().minusDays(3);
         List<Best> best=repo.findAllByItemIdAndDateBetween(itemId,preview,today);
         return best.stream().map(BestCh::of).collect(Collectors.toList());
+    }
+
+    @Override
+    public Object getItemInfo(String itemId) {
+        String result = "";
+        String uri = "https://display.cjonstyle.com/c/rest/item/" + itemId + "/itemInfo.json?channelCode=50001002&isEmployee=false";
+        JSONObject jsonObject = null;
+        try {
+            URL url = new URL(uri);
+            BufferedReader bf;
+            bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+            result = bf.readLine();
+
+            JSONParser jsonParser = new JSONParser();
+            jsonObject = (JSONObject) jsonParser.parse(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return (Object) jsonObject;
     }
 }

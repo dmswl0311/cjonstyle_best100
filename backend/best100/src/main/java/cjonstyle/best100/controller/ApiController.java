@@ -46,4 +46,11 @@ public class ApiController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
+    // 상품 정보 API
+    @GetMapping("/item-info/{item_id}")
+    public ResponseEntity<Object> getItemInfo(@PathVariable("item_id") String itemId) {
+        Object res = service.getItemInfo(itemId);
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
 }
