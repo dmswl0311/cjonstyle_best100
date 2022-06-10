@@ -2,6 +2,7 @@ package cjonstyle.best100.service;
 
 
 import cjonstyle.best100.domain.Best;
+import cjonstyle.best100.domain.dto.BestCh;
 import cjonstyle.best100.domain.dto.BestRes;
 import cjonstyle.best100.repository.ApiRepo;
 import lombok.RequiredArgsConstructor;
@@ -101,5 +102,13 @@ public class ApiServiceImpl implements ApiService {
             bestList=repo.findAllByDateOrderByPriceDesc(today);
         }
         return bestList.stream().map(BestRes::of).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BestCh> getChangeBestItem(String itemId) {
+        LocalDate today=LocalDate.now();
+        LocalDate preview=LocalDate.now().minusDays(3);
+        List<Best> best=repo.findAllByItemIdAndDateBetween(itemId,preview,today);
+        return best.stream().map(BestCh::of).collect(Collectors.toList());
     }
 }
