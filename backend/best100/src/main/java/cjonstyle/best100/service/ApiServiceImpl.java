@@ -2,7 +2,7 @@ package cjonstyle.best100.service;
 
 
 import cjonstyle.best100.domain.Best;
-import cjonstyle.best100.domain.dto.BestDto;
+import cjonstyle.best100.domain.dto.BestRes;
 import cjonstyle.best100.repository.ApiRepo;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,9 +47,9 @@ public class ApiServiceImpl implements ApiService {
             JSONObject ItemInfoResult = (JSONObject) jsonObject.get("result");
             JSONArray ItemInfo = (JSONArray) ItemInfoResult.get("cateTop100ItemTupleList");
 
-            BestDto best;
+            BestRes best;
             for (int i = 0; i < ItemInfo.size(); i++) {
-                best = new BestDto();
+                best = new BestRes();
                 JSONObject item = (JSONObject) ItemInfo.get(i);
                 // 상품명
                 String itemId = (String) item.get("itemCd");
@@ -82,5 +83,17 @@ public class ApiServiceImpl implements ApiService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public List<BestRes> getAllBestItem() {
+        LocalDate today=LocalDate.now();
+        System.out.println("오늘 날짜 :: "+today);
+        List<Best> bestList=repo.findAllByDateOrderByRank(today);
+        if(bestList.size()==0){
+            // 현재 날짜에 저장된 best 아이템이 없다면 saveAllBestItem 실행
+            saveAllBestItem();
+        }
+        return bestList.stream().map(BestRes::of).collect(Collectors.toList());
     }
 }

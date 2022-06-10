@@ -1,5 +1,9 @@
 package cjonstyle.best100.domain.dto;
+
+import cjonstyle.best100.domain.Best;
+import cjonstyle.best100.domain.Opinion;
 import lombok.*;
+
 import java.time.LocalDate;
 
 @Getter
@@ -8,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 @ToString
-public class BestDto {
+public class BestRes {
     private Long id; // pk
     private String itemId; //상품 코드
     private LocalDate date; // 날짜
@@ -16,4 +20,16 @@ public class BestDto {
     private int rank;  // 순위
     private String tmarvlYn; // 내일 배송 여부
     private String slCls; // 상품 상태 정보 (A : 정상, S : 매진, I : 판매중단, D : 영구중단)
+
+    public static BestRes of(Best best) {
+        return builder()
+                .id(best.getId())
+                .itemId(best.getItemId())
+                .date(best.getDate())
+                .price(best.getPrice())
+                .rank(best.getRank())
+                .tmarvlYn(best.getTmarvlYn())
+                .slCls(best.getSlCls())
+                .build();
+    }
 }

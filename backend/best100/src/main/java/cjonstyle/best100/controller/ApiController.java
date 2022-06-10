@@ -1,5 +1,6 @@
 package cjonstyle.best100.controller;
 
+import cjonstyle.best100.domain.dto.BestRes;
 import cjonstyle.best100.domain.dto.OpinionRes;
 import cjonstyle.best100.service.ApiServiceImpl;
 import cjonstyle.best100.service.OpinionServiceImpl;
@@ -21,9 +22,15 @@ public class ApiController {
 
     //  오늘자 BEST 아이템을 DB에 저장
     //  하루에 한번만 실행
-    @GetMapping("/best-item")
+    @PostMapping("/best-item")
     public ResponseEntity<Boolean> saveAllBestItem() {
         boolean res = service.saveAllBestItem();
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @GetMapping("/best-item")
+    public ResponseEntity<List<BestRes>> getAllBestItem() {
+        List<BestRes> res = service.getAllBestItem();
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 

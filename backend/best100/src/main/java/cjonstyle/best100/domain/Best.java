@@ -1,6 +1,6 @@
 package cjonstyle.best100.domain;
 
-import cjonstyle.best100.domain.dto.BestDto;
+import cjonstyle.best100.domain.dto.BestRes;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
@@ -38,7 +38,7 @@ public class Best {
     private String slCls; // 상품 상태 정보 (A : 정상, S : 매진, I : 판매중단, D : 영구중단)
 
     //    dto->entity
-    public static Best of(BestDto best) {
+    public static Best of(BestRes best) {
         return builder()
                 .id(best.getId())
                 .itemId(best.getItemId())

@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ApiRepo extends JpaRepository<Best,Long> {
     List<Best> findTopByDate(LocalDate now);
+    List<Best> findAllByDateOrderByRank(LocalDate now);
 }
