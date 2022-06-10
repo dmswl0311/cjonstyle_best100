@@ -10,23 +10,19 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 @CrossOrigin("*")
 public class ApiServiceImpl implements ApiService {
     private final ApiRepo repo;
+    private final String uri1="https://display.cjonstyle.com/c/rest/category/getTop100ItemList?type=P"; // BEST 아이템 OPEN API
 
     @Override
     public boolean saveAllBestItem() {
@@ -39,7 +35,7 @@ public class ApiServiceImpl implements ApiService {
 
         try {
             String result = "";
-            URL url = new URL("https://display.cjonstyle.com/c/rest/category/getTop100ItemList?type=P");
+            URL url = new URL(uri1);
             BufferedReader bf;
             bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
             result = bf.readLine();
@@ -59,9 +55,26 @@ public class ApiServiceImpl implements ApiService {
                 // 가격
                 JSONObject info = (JSONObject) item.get("rmItempriceInfo");
                 Long price = (Long) info.get("customerPrice");
+                // 내일 배송 여부
+                boolean tmarvlYn = (boolean) info.get("tmarvlYn");
+                if(tmarvlYn) best.setTmarvlYn("T");
+                else best.setTmarvlYn("F");
+
+                // 상품 상태 불러오기
+                String uri2="https://display.cjonstyle.com/c/rest/item/"+itemId+"/itemInfo.json?channelCode=50001002&isEmployee=false";
+                URL url2 = new URL(uri2);
+                bf = new BufferedReader(new InputStreamReader(url2.openStream(), "UTF-8"));
+                result = bf.readLine();
+                jsonObject = (JSONObject) jsonParser.parse(result);
+                ItemInfoResult = (JSONObject) jsonObject.get("result");
+                info = (JSONObject) ItemInfoResult.get("detailInfo");
+                String slCls = (String) info.get("slCls");
+
+                // 아이템 저장
                 best.setItemId(itemId);
                 best.setPrice(price);
                 best.setRank(i + 1);
+                best.setSlCls(slCls);
                 repo.save(Best.of(best));
             }
             return true;

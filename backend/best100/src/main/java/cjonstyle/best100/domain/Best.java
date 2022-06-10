@@ -1,7 +1,6 @@
 package cjonstyle.best100.domain;
 
 import cjonstyle.best100.domain.dto.BestDto;
-import cjonstyle.best100.domain.dto.OpinionRes;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
@@ -32,6 +31,12 @@ public class Best {
     @Column(name = "best_rank")
     private int rank;  // 순위
 
+    @Column(name = "best_tmarvlYn")
+    private String tmarvlYn; // 내일 배송 여부
+
+    @Column(name="best_slCls")
+    private String slCls; // 상품 상태 정보 (A : 정상, S : 매진, I : 판매중단, D : 영구중단)
+
     //    dto->entity
     public static Best of(BestDto best) {
         return builder()
@@ -40,6 +45,8 @@ public class Best {
                 .date(LocalDate.now())
                 .price(best.getPrice())
                 .rank(best.getRank())
+                .tmarvlYn(best.getTmarvlYn())
+                .slCls(best.getSlCls())
                 .build();
     }
 }

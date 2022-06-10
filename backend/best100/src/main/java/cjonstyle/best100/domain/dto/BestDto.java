@@ -1,12 +1,5 @@
 package cjonstyle.best100.domain.dto;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.time.LocalDate;
 
 @Getter
@@ -21,4 +14,6 @@ public class BestDto {
     private LocalDate date; // 날짜
     private Long price; // 가격
     private int rank;  // 순위
+    private String tmarvlYn; // 내일 배송 여부
+    private String slCls; // 상품 상태 정보 (A : 정상, S : 매진, I : 판매중단, D : 영구중단)
 }
