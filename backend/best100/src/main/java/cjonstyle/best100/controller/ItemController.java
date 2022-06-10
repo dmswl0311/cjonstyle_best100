@@ -1,8 +1,8 @@
 package cjonstyle.best100.controller;
 
-import cjonstyle.best100.domain.dto.BestCh;
-import cjonstyle.best100.domain.dto.BestRes;
-import cjonstyle.best100.service.ApiServiceImpl;
+import cjonstyle.best100.domain.dto.BestItem.BestCh;
+import cjonstyle.best100.domain.dto.BestItem.BestRes;
+import cjonstyle.best100.service.ItemServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,8 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin("*")
 @Slf4j
-public class ApiController {
-    private final ApiServiceImpl service;
+public class ItemController {
+    private final ItemServiceImpl service;
 
     //  오늘자 BEST 아이템을 DB에 저장
     //  하루에 한번만 실행

@@ -1,13 +1,12 @@
 package cjonstyle.best100.service;
 
 import cjonstyle.best100.domain.Opinion;
-import cjonstyle.best100.domain.dto.OpinionReq;
-import cjonstyle.best100.domain.dto.OpinionRes;
+import cjonstyle.best100.domain.dto.Opinion.OpinionReq;
+import cjonstyle.best100.domain.dto.Opinion.OpinionRes;
 import cjonstyle.best100.repository.OpinionRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.Null;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,7 +20,7 @@ public class OpinionServiceImpl implements OpinionService {
     public List<OpinionRes> getAllOpinion(String itemId, String state) {
         List<Opinion> opinions = null;
         if ("like".equals(state)) {
-            opinions = repo.findAllByItemIdOrderByLike(itemId); // 좋아요순
+            opinions = repo.findAllByItemIdOrderByLikeDesc(itemId); // 좋아요순
         } else {
             opinions = repo.findAllByItemIdOrderByDateDesc(itemId); // 날짜순
         }

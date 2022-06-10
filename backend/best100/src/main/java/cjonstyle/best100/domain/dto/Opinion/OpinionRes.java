@@ -1,10 +1,8 @@
-package cjonstyle.best100.domain.dto;
+package cjonstyle.best100.domain.dto.Opinion;
 
 import cjonstyle.best100.domain.Opinion;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
-import javax.persistence.Column;
 import java.time.LocalDate;
 
 @Getter

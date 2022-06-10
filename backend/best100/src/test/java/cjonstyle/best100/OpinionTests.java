@@ -1,7 +1,7 @@
 package cjonstyle.best100;
 
-import cjonstyle.best100.domain.dto.OpinionReq;
-import cjonstyle.best100.domain.dto.OpinionRes;
+import cjonstyle.best100.domain.dto.Opinion.OpinionReq;
+import cjonstyle.best100.domain.dto.Opinion.OpinionRes;
 import cjonstyle.best100.service.OpinionServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;

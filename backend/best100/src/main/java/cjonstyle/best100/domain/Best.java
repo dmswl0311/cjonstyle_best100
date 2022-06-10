@@ -1,6 +1,6 @@
 package cjonstyle.best100.domain;
 
-import cjonstyle.best100.domain.dto.BestRes;
+import cjonstyle.best100.domain.dto.BestItem.BestRes;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 

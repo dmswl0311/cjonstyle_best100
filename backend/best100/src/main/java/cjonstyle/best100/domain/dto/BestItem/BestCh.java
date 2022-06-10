@@ -1,4 +1,4 @@
-package cjonstyle.best100.domain.dto;
+package cjonstyle.best100.domain.dto.BestItem;
 
 import cjonstyle.best100.domain.Best;
 import lombok.*;

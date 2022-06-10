@@ -2,10 +2,10 @@ package cjonstyle.best100.service;
 
 
 import cjonstyle.best100.domain.Best;
-import cjonstyle.best100.domain.dto.BestCh;
-import cjonstyle.best100.domain.dto.BestRes;
-import cjonstyle.best100.domain.dto.ItemInfo;
-import cjonstyle.best100.repository.ApiRepo;
+import cjonstyle.best100.domain.dto.BestItem.BestCh;
+import cjonstyle.best100.domain.dto.BestItem.BestRes;
+import cjonstyle.best100.domain.dto.Item.ItemInfo;
+import cjonstyle.best100.repository.ItemRepo;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.sql.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,8 +25,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @CrossOrigin("*")
-public class ApiServiceImpl implements ApiService {
-    private final ApiRepo repo;
+public class ItemServiceImpl implements ItemService {
+    private final ItemRepo repo;
     private final String uri1 = "https://display.cjonstyle.com/c/rest/category/getTop100ItemList?type=P"; // BEST 아이템 OPEN API
 
     @Override
