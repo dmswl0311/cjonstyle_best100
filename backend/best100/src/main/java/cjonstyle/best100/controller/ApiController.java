@@ -28,9 +28,15 @@ public class ApiController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
+    /**
+     * state:
+     * priceDesc 높은 가격순
+     * priceAsc 낮은 가격순
+     * rank 랭킹순
+     */
     @GetMapping("/best-item")
-    public ResponseEntity<List<BestRes>> getAllBestItem() {
-        List<BestRes> res = service.getAllBestItem();
+    public ResponseEntity<List<BestRes>> getAllBestItem(@RequestParam("state") String state) {
+        List<BestRes> res = service.getAllBestItem(state);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 

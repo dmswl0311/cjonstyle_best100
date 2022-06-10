@@ -86,13 +86,19 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
-    public List<BestRes> getAllBestItem() {
+    public List<BestRes> getAllBestItem(String state) {
         LocalDate today=LocalDate.now();
-        System.out.println("오늘 날짜 :: "+today);
-        List<Best> bestList=repo.findAllByDateOrderByRank(today);
-        if(bestList.size()==0){
-            // 현재 날짜에 저장된 best 아이템이 없다면 saveAllBestItem 실행
-            saveAllBestItem();
+        List<Best> flag = repo.findTopByDate(today);
+        if (flag.size() >= 1) saveAllBestItem(); // 오늘 날짜에 저장된 DB가 없다면 api 불러와서 저장
+        List<Best> bestList=null;
+        if("rank".equals(state)){
+            bestList=repo.findAllByDateOrderByRank(today);
+        }else if("priceAsc".equals(state)){
+            // 낮은 가격순
+            bestList=repo.findAllByDateOrderByPriceAsc(today);
+        }else if("priceDesc".equals(state)){
+            // 높은 가격순
+            bestList=repo.findAllByDateOrderByPriceDesc(today);
         }
         return bestList.stream().map(BestRes::of).collect(Collectors.toList());
     }
