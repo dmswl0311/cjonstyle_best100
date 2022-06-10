@@ -22,7 +22,8 @@ public class OpinionTests {
     @Transactional
     public void getAllOpinionTest() {
         String itemId="123";
-        List<OpinionRes> opinions=service.getAllOpinion(itemId);
+        String state="like";
+        List<OpinionRes> opinions=service.getAllOpinion(itemId, state);
         Assert.assertEquals(1,opinions.size());
     }
 

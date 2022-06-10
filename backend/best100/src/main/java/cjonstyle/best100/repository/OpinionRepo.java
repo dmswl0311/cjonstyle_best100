@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OpinionRepo extends JpaRepository<Opinion,Long> {
-    List<Opinion> findAllByItemIdOrderByDate(String itemId);
+    List<Opinion> findAllByItemIdOrderByDateDesc(String itemId);
+    List<Opinion> findAllByItemIdOrderByLike(String itemId);
     Optional<Opinion> findById(Long opinionId);
+
 }

@@ -6,7 +6,7 @@ import cjonstyle.best100.domain.dto.OpinionRes;
 import java.util.List;
 
 public interface OpinionService {
-    List<OpinionRes> getAllOpinion(String itemId);
+    List<OpinionRes> getAllOpinion(String itemId, String state);
 
     OpinionRes saveOpinion(String itemId, OpinionReq req);
 

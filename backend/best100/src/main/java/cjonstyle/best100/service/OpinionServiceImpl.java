@@ -18,8 +18,13 @@ public class OpinionServiceImpl implements OpinionService {
     private final OpinionRepo repo;
 
     @Override
-    public List<OpinionRes> getAllOpinion(String itemId) {
-        List<Opinion> opinions = repo.findAllByItemIdOrderByDate(itemId);
+    public List<OpinionRes> getAllOpinion(String itemId, String state) {
+        List<Opinion> opinions = null;
+        if ("like".equals(state)) {
+            opinions = repo.findAllByItemIdOrderByLike(itemId); // 좋아요순
+        } else {
+            opinions = repo.findAllByItemIdOrderByDateDesc(itemId); // 날짜순
+        }
         return opinions.stream().map(OpinionRes::of).collect(Collectors.toList());
     }
 
@@ -37,7 +42,7 @@ public class OpinionServiceImpl implements OpinionService {
         String reqPwd = req.getPwd();
         String oriPwd = opinion.get().getPwd();
         if (!reqPwd.equals(oriPwd)) throw new NullPointerException();
-        OpinionRes dto=OpinionRes.of(opinion.get());
+        OpinionRes dto = OpinionRes.of(opinion.get());
         dto.setContents(req.getContents());
         Opinion updateOpinion = repo.save(Opinion.of(dto));
         return OpinionRes.of(updateOpinion);
@@ -69,6 +74,8 @@ public class OpinionServiceImpl implements OpinionService {
             dto.setLike(dto.getLike() + 1);
         } else if ("hate".equals(expr)) {
             dto.setHate(dto.getHate() + 1);
+        }else {
+            throw new NullPointerException();
         }
         Opinion updateOpinion = repo.save(Opinion.of(dto));
         return OpinionRes.of(updateOpinion);
