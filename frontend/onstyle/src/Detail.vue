@@ -29,6 +29,13 @@
                         <div v-else><b-button pill variant="outline-secondary" size="sm">내일도착 불가</b-button></div>
                     </div>
                 </div>
+                <div>
+                  <img
+                      class="kakao_btn"
+                      src="@/picture/kakaobtnlogo.png"
+                      @click="kakaoLink"
+                  />
+                </div>
             </b-col>
           </b-row>
           <!-- 차트 -->
@@ -127,7 +134,6 @@
     </b-overlay>
   </div>
 </template>
-
 <script>
 import axios from 'axios';
 import { Bar } from 'vue-chartjs/legacy'
@@ -295,6 +301,31 @@ export default {
         })
   },
   methods:{
+    kakaoLink () {
+      window.Kakao.Link.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: this.item.itemName,
+          description: this.item.price+"원, 현재 랭킹 "+this.chartData.datasets[0].data[((this.chartData.datasets[0].data).length)-2]+"위",
+          imageUrl: this.item.images[0],
+          link: {
+            mobileWebUrl: '카카오공유하기 시 클릭 후 이동 경로',
+            webUrl: '카카오공유하기 시 클릭 후 이동 경로',
+          },
+        },
+        buttons: [
+          {
+            title: '웹으로 보기',
+            link: {
+              mobileWebUrl: '카카오공유하기 시 클릭 후 이동 경로',
+              webUrl: '카카오공유하기 시 클릭 후 이동 경로',
+            },
+          },
+        ],
+        // 카카오톡 미설치 시 카카오톡 설치 경로이동
+        installTalk: true,
+      })
+    },
     onClickDeleteOpinion(o){
       if(o.inputPwd!=o.pwd){
         alert("비밀번호가 일치하지 않습니다!")
@@ -341,6 +372,7 @@ export default {
         })
         .then(()=> {
           alert("수정 되었습니다.")
+          o.inputPwd=null
         })
     },
     onCreate(){
@@ -467,6 +499,12 @@ function getDateFormat(_day){
   margin-top:2rem;
   display: flex;
   justify-content: space-evenly;
+}
+.kakao_btn{
+  margin-top:1rem;
+  float:right;
+  width:3rem;
+  height: auto;
 }
 
 </style>

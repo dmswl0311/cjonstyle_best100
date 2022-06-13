@@ -4,7 +4,9 @@
       <div class="main-nav-bar">
         <b-img src="http://cloud-image.cjonstyle.net/public/confirm/contents/design/module/dm0029/201801/best_ctg_img01.png" fluid alt="Fluid image"></b-img>
         <div class="main-nav-bar-right">
-            <b-form-checkbox value="true" unchecked-value="false" v-model="tomorrowArriveStatus">내일 도착</b-form-checkbox>
+            <b-form-checkbox value="true" unchecked-value="false" v-model="tomorrowArriveStatus" name="check-button" button button-variant="outline-primary" style="margin-right: 1rem;">
+                <b>내일 도착 📦</b>
+            </b-form-checkbox>
             <!-- <b-form-checkbox value="true" unchecked-value="false" v-model="soldOutStatus">품절 포함</b-form-checkbox> -->
             <b-form-select v-model="optionSelected" :options="options" size="sm"></b-form-select>
         </div>
@@ -15,6 +17,9 @@
             <div class="best-item-line">
                 <!-- 카드 하나 -->
                 <div v-for="item in line" :key="item.itemId" class="best-item-card">
+                    <!-- <div class="lb-text">
+                        <h5>{{item.rank}}위</h5>
+                    </div> -->
                     <b-img fluid :src="item.itemImage" alt="Image 1"></b-img>
                     <div class="card-text">
                         <div class="card-box">
@@ -64,6 +69,7 @@ export default {
         tomorrowArriveStatus : "false",
         soldOutStatus:"false",
         optionSelected: "rank",
+        checked1: false,
         options: [
             { value: 'rank', text: '랭킹순' },
             { value: 'priceAsc', text: '낮은 가격순' },
@@ -214,6 +220,12 @@ export default {
     text-align: right;
 }
 .card-box{
-    height:13rem;
+    height:12rem;
 }
+/* .lb-text {
+  padding: 10px 10px;
+  border-radius: 30px 30px 0px 0px;
+  background-color: #3633ff48;
+  text-align: center;
+} */
 </style>
