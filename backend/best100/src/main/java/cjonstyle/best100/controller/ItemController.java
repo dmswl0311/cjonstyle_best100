@@ -29,8 +29,8 @@ public class ItemController {
 
     /**
      * state:
-     * priceDesc 높은 가격순
-     * priceAsc 낮은 가격순
+     * priceDesc 가격 내림차순 (높은가격순)
+     * priceAsc 가격 오름차순 (낮은가격순)
      * rank 랭킹순
      */
     @GetMapping("/best-item")
@@ -53,4 +53,10 @@ public class ItemController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
+    // 내일 배송 true
+    @GetMapping("/best-item/tmarvlYn")
+    public ResponseEntity<List<BestRes>> getAllBestItemTmarvlYn(@RequestParam("state") String state) {
+        List<BestRes> res = service.getAllBestItemTmarvlYn(state);
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
 }

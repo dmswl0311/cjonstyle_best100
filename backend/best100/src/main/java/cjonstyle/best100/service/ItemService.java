@@ -7,7 +7,12 @@ import java.util.List;
 
 public interface ItemService {
     boolean saveAllBestItem();
+
     List<BestRes> getAllBestItem(String state);
+
     List<BestCh> getChangeBestItem(String itemId);
+
     Object getItemInfo(String itemId);
+
+    List<BestRes> getAllBestItemTmarvlYn(String state);
 }
