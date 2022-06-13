@@ -37,6 +37,12 @@ public class Best {
     @Column(name="best_slCls")
     private String slCls; // 상품 상태 정보 (A : 정상, S : 매진, I : 판매중단, D : 영구중단)
 
+    @Column(name="best_itemName")
+    private String itemName;
+
+    @Column(name="best_itemImage")
+    private String itemImage;
+
     //    dto->entity
     public static Best of(BestRes best) {
         return builder()
@@ -47,6 +53,8 @@ public class Best {
                 .rank(best.getRank())
                 .tmarvlYn(best.getTmarvlYn())
                 .slCls(best.getSlCls())
+                .itemImage(best.getItemImage())
+                .itemName(best.getItemName())
                 .build();
     }
 }

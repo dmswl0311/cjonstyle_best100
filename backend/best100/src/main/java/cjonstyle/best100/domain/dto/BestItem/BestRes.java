@@ -19,6 +19,9 @@ public class BestRes {
     private int rank;  // 순위
     private String tmarvlYn; // 내일 배송 여부
     private String slCls; // 상품 상태 정보 (A : 정상, S : 매진, I : 판매중단, D : 영구중단)
+    private String itemName;
+    private String itemImage;
+
 
     public static BestRes of(Best best) {
         return builder()
@@ -29,6 +32,8 @@ public class BestRes {
                 .rank(best.getRank())
                 .tmarvlYn(best.getTmarvlYn())
                 .slCls(best.getSlCls())
+                .itemImage(best.getItemImage())
+                .itemName(best.getItemName())
                 .build();
     }
 }
