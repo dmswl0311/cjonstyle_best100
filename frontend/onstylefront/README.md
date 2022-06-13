@@ -1,4 +1,4 @@
-# onstyle
+# onstylefront
 
 ## Project setup
 ```
