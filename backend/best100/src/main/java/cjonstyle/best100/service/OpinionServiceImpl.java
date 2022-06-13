@@ -5,6 +5,7 @@ import cjonstyle.best100.domain.dto.Opinion.OpinionReq;
 import cjonstyle.best100.domain.dto.Opinion.OpinionRes;
 import cjonstyle.best100.repository.OpinionRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,9 +21,9 @@ public class OpinionServiceImpl implements OpinionService {
     public List<OpinionRes> getAllOpinion(String itemId, String state) {
         List<Opinion> opinions = null;
         if ("like".equals(state)) {
-            opinions = repo.findAllByItemIdOrderByLikeDesc(itemId); // 좋아요순
+            opinions = repo.findAllByItemIdOrderByLikeDescIdDesc(itemId); // 좋아요순
         } else {
-            opinions = repo.findAllByItemIdOrderByDateDesc(itemId); // 날짜순
+            opinions = repo.findAllByItemIdOrderByDateDescIdDesc(itemId); // 날짜순
         }
         return opinions.stream().map(OpinionRes::of).collect(Collectors.toList());
     }
@@ -73,7 +74,7 @@ public class OpinionServiceImpl implements OpinionService {
             dto.setLike(dto.getLike() + 1);
         } else if ("hate".equals(expr)) {
             dto.setHate(dto.getHate() + 1);
-        }else {
+        } else {
             throw new NullPointerException();
         }
         Opinion updateOpinion = repo.save(Opinion.of(dto));

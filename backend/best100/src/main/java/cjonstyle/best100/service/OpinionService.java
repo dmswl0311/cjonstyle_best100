@@ -15,4 +15,5 @@ public interface OpinionService {
     boolean deleteOpinion(Long opinionId, OpinionReq req);
 
     OpinionRes updateExprOpinion(Long opinionId, String expr);
+
 }
