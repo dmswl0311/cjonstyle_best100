@@ -4,7 +4,10 @@
       <b-row>
         <b-col>
           <router-link to="/">
-            <img src="@/picture/onstylelogo.jpg" width="300px" /> </router-link
+            <img
+              src="@/assets/images/onstylelogo.jpg"
+              width="300px"
+            /> </router-link
         ></b-col>
         <b-col></b-col>
         <b-col></b-col>

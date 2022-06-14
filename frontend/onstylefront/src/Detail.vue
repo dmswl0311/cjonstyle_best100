@@ -41,7 +41,7 @@
             <div>
               <img
                 class="kakao_btn"
-                src="@/picture/kakaobtnlogo.png"
+                src="@/assets/images/kakaobtnlogo.png"
                 @click="kakaoLink"
               />
             </div>
@@ -62,6 +62,16 @@
           </div>
           <!-- 가격 차트 -->
           <div>
+            <div v-if="minPriceFlag">
+              <h4>최근 3일 중 최저가입니다!</h4>
+              <b-icon icon="arrow-down" aria-hidden="true"></b-icon>
+            </div>
+            <div v-else>
+              <div v-if="minPriceFlag">
+                <h4>최저가가 아닙니다.</h4>
+                <b-icon icon="arrow-up" aria-hidden="true"></b-icon>
+              </div>
+            </div>
             <Bar
               :chart-options="chartOptions"
               :chart-data="chartData2"
@@ -212,12 +222,12 @@
           </div>
         </div>
       </div>
-      <div>
+      <!-- <div v-if="item == null">
         <b-jumbotron header="품절된 상품입니다!">
           <p>죄송합니다. 상품 정보를 불러올 수 없습니다.</p>
           <b-button variant="primary" href="/">홈으로 가기</b-button>
         </b-jumbotron>
-      </div>
+      </div> -->
     </b-overlay>
   </div>
 </template>
@@ -294,6 +304,7 @@ export default {
     const beforeYesterdayFormat = getDateFormat.call(this, beforeYesterday);
     return {
       maxPrice: -1,
+      minPriceFlag: false,
       routerId: null,
       min: 101,
       max: -1,
@@ -354,7 +365,8 @@ export default {
         axios
           .get("http://localhost:8088/rest/api/best-item/" + this.routerId)
           .then((data) => {
-            const itemData = data.data;
+            const itemData = data.data.change;
+            this.minPriceFlag = data.data.flag;
             // 그래프에 rank 기입
             for (let i = 0; i < 3; i++) {
               let flag = false;
