@@ -155,3 +155,124 @@ GET /rest/api/best-item/tmarvlYn
   ]
 }
 ```
+-----
+
+## 한줄 평 REST API 
+### 1. 상품에 대한 모든 한줄 평 조회
+
+```
+GET /rest/opinion/{item_id}
+```
+
+| Parameter | Type   | Description                                              |
+|:----------|:-------|:---------------------------------------------------------|
+| state     | String | 정렬을 위한 state / like(좋아요가 높은 순), date(최근 날짜순) / 기본값은 date |
+
+#### Response
+```javascript
+{
+  [
+    {
+        "id": 526,
+        "itemId": "2002503869",
+        "pwd": "1111",
+        "contents": "한줄평 내용",
+        "date": "2022-06-11",
+        "like": 13,
+        "hate": 5
+    },
+        ...
+   ]
+}
+```
+
+### 2. 한줄 평 등록
+
+```
+POST /rest/opinion/{item_id}
+```
+#### Request
+```javascript
+{
+    "pwd":"1234",
+    "contents":"작성할 내용"
+}
+```
+#### Response
+```javascript
+{
+    "id": 937,
+    "itemId": "1111",
+    "pwd": "1234",
+    "contents": "작성할 내용",
+    "date": "2022-06-14",
+    "like": 0,
+    "hate": 0
+}
+```
+
+### 3. 한줄 평 수정
+
+```
+PATCH /rest/opinion/{opinion_id}
+```
+#### Request
+```javascript
+{
+    "pwd":"1234",
+    "contents":"수정할 내용"
+}
+```
+#### Response
+```javascript
+{
+    "id": 937,
+    "itemId": "1111",
+    "pwd": "1234",
+    "contents": "수정할 내용",
+    "date": "2022-06-14",
+    "like": 0,
+    "hate": 0
+}
+```
+
+### 4. 한줄 평 삭제
+
+```
+DELETE /rest/opinion/{opinion_id}
+```
+#### Request
+```javascript
+{
+    "pwd":"1234",
+    "contents":null
+}
+```
+#### Response
+```javascript
+{
+    true
+}
+```
+
+### 5. 한줄 평 좋아요 or 싫어요
+
+```
+PATCH /rest/opinion/expr/{opinion_id}
+```
+| Parameter | Type   | Description                |
+|:----------|:-------|:---------------------------|
+| expr      | String | 좋아요 클릭시 like, 싫어요 클릭시 hate |
+```
+#### Response
+```javascript
+{
+    "id": 937,
+    "itemId": "1111",
+    "pwd": "1234",
+    "contents": "수정할 내용",
+    "date": "2022-06-14",
+    "like": 1,
+    "hate": 0
+}
+```
