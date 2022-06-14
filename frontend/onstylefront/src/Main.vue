@@ -3,6 +3,25 @@
     <!-- navbar -->
     <div class="main-nav-bar">
       <div class="main-nav-bar-right">
+        <div v-if="this.dateFormat > this.beforeToday">
+          <b-icon
+            icon="arrow-left-circle"
+            font-scale="3"
+            aria-hidden="true"
+            @click="onClickLeft"
+          ></b-icon>
+        </div>
+        <div>
+          <h4>{{ date }}</h4>
+        </div>
+        <div v-if="this.today > this.dateFormat">
+          <b-icon
+            icon="arrow-right-circle"
+            font-scale="3"
+            aria-hidden="true"
+            @click="onClickRight"
+          ></b-icon>
+        </div>
         <b-button
           variant="outline-primary"
           style="margin-right: 1rem"
@@ -123,6 +142,10 @@ export default {
   components: {},
   data() {
     return {
+      today: null,
+      beforeToday: null,
+      date: null,
+      dateFormat: null,
       show: true,
       tomorrowArriveStatus: "false",
       soldOutStatus: "false",
@@ -138,9 +161,17 @@ export default {
     };
   },
   created() {
+    this.today = new Date();
+    let tday = new Date();
+    this.dateFormat = tday;
+    this.date = getDateFormat(tday);
+    this.beforeToday = new Date(new Date().setDate(new Date().getDate() - 2));
     axios
       .get(
-        "http://localhost:8088/rest/api/best-item?state=" + this.optionSelected
+        "http://localhost:8088/rest/api/best-item?state=" +
+          this.optionSelected +
+          "&date=" +
+          this.date
       )
       .then((data) => {
         const bestItem = [];
@@ -177,13 +208,50 @@ export default {
         this.tomorrowArriveStatus = "true";
       else this.tomorrowArriveStatus = "false";
     },
+    onClickLeft() {
+      const before = new Date(
+        this.dateFormat.setDate(this.dateFormat.getDate() - 1)
+      );
+      this.dateFormat = before;
+      this.date = getDateFormat(before);
+      console.log(this.date);
+    },
+    onClickRight() {
+      const before = new Date(
+        this.dateFormat.setDate(this.dateFormat.getDate() + 1)
+      );
+      this.dateFormat = before;
+      this.date = getDateFormat(before);
+    },
   },
   watch: {
+    date() {
+      axios
+        .get(
+          "http://localhost:8088/rest/api/best-item?state=" +
+            this.optionSelected +
+            "&date=" +
+            this.date
+        )
+        .then((data) => {
+          const bestItem = [];
+          let items = data.data;
+          this.oriItem = items;
+          // 4개씩 잘라서 저장
+          while (items.length > 0) {
+            if (items.length > 3) bestItem.push(items.splice(0, 4));
+            else bestItem.push(items.splice(0, items.length));
+          }
+          this.bestItem = bestItem;
+        });
+    },
     optionSelected() {
       axios
         .get(
           "http://localhost:8088/rest/api/best-item?state=" +
-            this.optionSelected
+            this.optionSelected +
+            "&date=" +
+            this.date
         )
         .then((data) => {
           const bestItem = [];
@@ -202,7 +270,9 @@ export default {
         axios
           .get(
             "http://localhost:8088/rest/api/best-item/tmarvlYn?state=" +
-              this.optionSelected
+              this.optionSelected +
+              "&date=" +
+              this.date
           )
           .then((data) => {
             const bestItem = [];
@@ -219,7 +289,9 @@ export default {
         axios
           .get(
             "http://localhost:8088/rest/api/best-item?state=" +
-              this.optionSelected
+              this.optionSelected +
+              "&date=" +
+              this.date
           )
           .then((data) => {
             const bestItem = [];
@@ -237,6 +309,12 @@ export default {
     soldOutStatus() {},
   },
 };
+function getDateFormat(_day) {
+  const year = _day.getFullYear();
+  const month = ("0" + (_day.getMonth() + 1)).slice(-2);
+  const day = ("0" + _day.getDate()).slice(-2);
+  return year + "-" + month + "-" + day;
+}
 </script>
 
 <style scoped>
@@ -259,6 +337,9 @@ export default {
 .main-nav-bar-right {
   margin-right: 10px;
   display: flex;
+}
+.main-nav-bar-right-date {
+  margin-right: 3rem;
 }
 .card-list {
   margin-top: 3rem;

@@ -29,13 +29,11 @@
               </div>
               <div class="item-tmarvlYn-box">
                 <div v-if="item.tmarvlYn == 'T'">
-                  <b-button pill variant="outline-primary" size="sm"
-                    >내일도착</b-button
-                  >
+                  <b-button pill variant="outline-primary">#내일도착</b-button>
                 </div>
                 <div v-else>
-                  <b-button pill variant="outline-secondary" size="sm"
-                    >내일도착 불가</b-button
+                  <b-button pill variant="outline-secondary"
+                    >#내일도착 불가</b-button
                   >
                 </div>
               </div>
