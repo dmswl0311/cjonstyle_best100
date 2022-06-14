@@ -2,40 +2,57 @@
   <div class="container">
     <!-- navbar -->
     <div class="main-nav-bar">
-      <div class="main-nav-bar-right">
-        <div v-if="this.dateFormat > this.beforeToday">
-          <b-icon
-            icon="arrow-left-circle"
-            font-scale="3"
-            aria-hidden="true"
-            @click="onClickLeft"
-          ></b-icon>
-        </div>
-        <div>
-          <h4>{{ date }}</h4>
-        </div>
-        <div v-if="this.today > this.dateFormat">
-          <b-icon
-            icon="arrow-right-circle"
-            font-scale="3"
-            aria-hidden="true"
-            @click="onClickRight"
-          ></b-icon>
-        </div>
-        <b-button
-          variant="outline-primary"
-          style="margin-right: 1rem"
-          @click="onClicktomorrowBtn"
-        >
-          <b>#내일 도착📦</b>
-        </b-button>
-        <!-- <b-form-checkbox value="true" unchecked-value="false" v-model="soldOutStatus">품절 포함</b-form-checkbox> -->
-        <b-form-select
-          v-model="optionSelected"
-          :options="options"
-          size="sm"
-        ></b-form-select>
-      </div>
+      <b-row>
+        <b-col></b-col>
+        <b-col>
+          <div class="main-nav-bar-center">
+            <b-row>
+              <b-col
+                ><div v-if="this.dateFormat > this.beforeToday">
+                  <b-icon
+                    icon="arrow-left-circle"
+                    font-scale="3"
+                    aria-hidden="true"
+                    @click="onClickLeft"
+                  ></b-icon>
+                </div>
+                <div v-else></div>
+              </b-col>
+              <b-col>
+                <h4>{{ date }}</h4>
+              </b-col>
+              <b-col>
+                <div v-if="this.today > this.dateFormat">
+                  <b-icon
+                    icon="arrow-right-circle"
+                    font-scale="3"
+                    aria-hidden="true"
+                    @click="onClickRight"
+                  ></b-icon>
+                </div>
+                <div v-else></div>
+              </b-col>
+            </b-row>
+          </div>
+        </b-col>
+        <b-col>
+          <div class="main-nav-bar-right">
+            <b-button
+              variant="outline-primary"
+              style="margin-right: 1rem"
+              @click="onClicktomorrowBtn"
+            >
+              <b>#내일 도착📦</b>
+            </b-button>
+            <!-- <b-form-checkbox value="true" unchecked-value="false" v-model="soldOutStatus">품절 포함</b-form-checkbox> -->
+            <b-form-select
+              v-model="optionSelected"
+              :options="options"
+              size="sm"
+            ></b-form-select>
+          </div>
+        </b-col>
+      </b-row>
     </div>
     <b-overlay :show="show" rounded="sm">
       <!-- 카드 리스트 -->
@@ -68,42 +85,14 @@
                       variant="outline-primary"
                       size="sm"
                       @click="clickTomorrowArriveStatus"
-                      class="tomorrow-btn"
+                      class="tomorrowBtn"
                       >#내일도착</b-button
                     >
                   </div>
                 </div>
               </div>
             </div>
-
-            <!-- <b-img fluid :src="item.itemImage" alt="Image 1"></b-img> -->
             <!-- <div class="card-text">
-              <div class="card-box">
-                <router-link :to="`/detail/${item.itemId}`">
-                  <div>
-                    <div class="card-title">
-                      <h5>{{ item.rank }}위 {{ item.itemName }}</h5>
-                    </div>
-                    <div class="card-price">{{ item.price }}원</div>
-                  </div>
-                </router-link>
-                <div class="card-btn">
-                  <div v-if="item.tmarvlYn == 'T'">
-                    <b-button
-                      pill
-                      variant="outline-primary"
-                      size="sm"
-                      @click="clickTomorrowArriveStatus"
-                      >내일도착</b-button
-                    >
-                  </div>
-                  <div v-if="item.slCls == 'S'">
-                    <b-button pill variant="outline-danger" size="sm"
-                      >품절</b-button
-                    >
-                  </div>
-                </div>
-              </div>
               <div class="opinion-box">
                 <div v-if="item.rank">
                   <div class="opinion">
@@ -331,15 +320,14 @@ function getDateFormat(_day) {
 
 .main-nav-bar {
   align-items: center;
-  display: flex;
-  justify-content: flex-end;
 }
 .main-nav-bar-right {
-  margin-right: 10px;
+  float: right;
   display: flex;
 }
-.main-nav-bar-right-date {
-  margin-right: 3rem;
+.main-nav-bar-center {
+  margin: 0 auto;
+  text-align: center;
 }
 .card-list {
   margin-top: 3rem;
@@ -433,7 +421,8 @@ body {
   height: auto;
   padding: 0px 10px 0px 10px;
 }
-.tomorrow-btn {
-  text-align: center;
+.tomorrowBtn {
+  display: flex;
+  float: right;
 }
 </style>
