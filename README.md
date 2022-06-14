@@ -64,36 +64,42 @@ GET /rest/api/best-item
 }
 ```
 
-### 3. 상품 BEST 100 순위 및 가격 변동 추이 (3일간)
+### 3. 상품 BEST 100 순위 및 가격 변동 추이 (3일간)와 현재 가격 최저가 여부
 ```
 GET /rest/api/best-item/{item_id}
 ```
 #### Response
 ```javascript
 {
-  [
-    {
-        "id": 635,
-        "itemId": "2000265560",
-        "date": "2022-06-12",
-        "price": 89000,
-        "rank": 2
-    },
-    {
-        "id": 734,
-        "itemId": "2000265560",
-        "date": "2022-06-13",
-        "price": 89000,
-        "rank": 1
-    },
-    {
-        "id": 837,
-        "itemId": "2000265560",
-        "date": "2022-06-14",
-        "price": 89000,
-        "rank": 1
-    }
-]
+  {
+    "change": [
+        {
+            "id": 634,
+            "itemId": "2001949085",
+            "date": "2022-06-12",
+            "price": 169900,
+            "rank": 1,
+            "minPriceFlag": false
+        },
+        {
+            "id": 736,
+            "itemId": "2001949085",
+            "date": "2022-06-13",
+            "price": 169900,
+            "rank": 3,
+            "minPriceFlag": false
+        },
+        {
+            "id": 840,
+            "itemId": "2001949085",
+            "date": "2022-06-14",
+            "price": 169900,
+            "rank": 4,
+            "minPriceFlag": false
+        }
+    ],
+    "flag": true
+  }
 }
 ```
 
