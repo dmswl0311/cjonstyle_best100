@@ -2,7 +2,7 @@
   <div class="container">
     <b-overlay :show="show" rounded="sm">
       <div v-if="item">
-        {{ item.itemId }}
+        <!-- {{ item.itemId }} -->
         <b-row>
           <b-col
             ><b-img :src="item.images[0]" fluid alt="Responsive image"></b-img
@@ -16,7 +16,10 @@
                 {{ item.itemName }}
               </h2>
               <h2 v-else>제목없음</h2>
-              <h3 class="item-price">{{ item.price }}원</h3>
+              <h3 class="item-price">
+                <font class="item-price-deco">{{ item.oriPrice }}원</font>
+                {{ item.price }}원
+              </h3>
               <hr />
               <div v-for="card in item.cards" :key="card">
                 <h5>{{ card }}</h5>
@@ -286,6 +289,7 @@ export default {
     const beforeYesterday = new Date(today.setDate(today.getDate() - 1));
     const beforeYesterdayFormat = getDateFormat.call(this, beforeYesterday);
     return {
+      maxPrice: -1,
       routerId: null,
       min: 101,
       max: -1,
@@ -354,8 +358,12 @@ export default {
                 if (itemData[j].date == this.chartData.labels[i]) {
                   this.chartData.datasets[0].data.push(itemData[j].rank);
                   this.chartData2.datasets[0].data.push(itemData[j].price);
+
                   if (this.min > itemData[j].rank) this.min = itemData[j].rank;
                   if (this.max < itemData[j].rank) this.max = itemData[j].rank;
+
+                  if (this.maxPrice < itemData[j].price)
+                    this.maxPrice = itemData[j].price;
                   flag = true;
                   break;
                 }
@@ -366,6 +374,7 @@ export default {
               }
             }
             this.chartData.datasets[0].data.push(this.min, this.max);
+            this.chartData2.datasets[0].data.push(0, this.maxPrice + 10000);
           })
           .then(() => {
             axios
@@ -404,8 +413,8 @@ export default {
             "위",
           imageUrl: this.item.images[0],
           link: {
-            mobileWebUrl: "카카오공유하기 시 클릭 후 이동 경로",
-            webUrl: "카카오공유하기 시 클릭 후 이동 경로",
+            mobileWebUrl: document.location.href,
+            webUrl: document.location.href,
           },
         },
         buttons: [
@@ -457,12 +466,11 @@ export default {
     },
     onClickUpdateOpinion(o) {
       o.readOnly = true;
-      console.log("수정할 내용" + o.contents);
-      console.log("입력한 비밀번호" + o.inputPwd);
-      console.log("클릭한 아이디" + o.id);
+      // console.log("수정할 내용" + o.contents);
+      // console.log("입력한 비밀번호" + o.inputPwd);
+      // console.log("클릭한 아이디" + o.id);
 
       if (o.inputPwd != o.pwd) {
-        console.log(this.opinions);
         alert("비밀번호가 일치하지 않습니다!");
         // 내용을 원래내용으로 바꿔줘야하는데 어케함;
         o.contents = o.precontents;
@@ -571,6 +579,11 @@ function getDateFormat(_day) {
 }
 .item-price {
   text-align: right;
+}
+.item-price-deco {
+  text-decoration: line-through;
+  font-size: large;
+  color: rgba(128, 128, 128, 0.518);
 }
 .opinion-one {
   padding: 10px;
