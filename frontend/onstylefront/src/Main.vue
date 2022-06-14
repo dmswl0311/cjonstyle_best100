@@ -3,17 +3,13 @@
     <!-- navbar -->
     <div class="main-nav-bar">
       <div class="main-nav-bar-right">
-        <b-form-checkbox
-          value="true"
-          unchecked-value="false"
-          v-model="tomorrowArriveStatus"
-          name="check-button"
-          button
-          button-variant="outline-primary"
+        <b-button
+          variant="outline-primary"
           style="margin-right: 1rem"
+          @click="onClicktomorrowBtn"
         >
-          <b>#내일 도착 📦</b>
-        </b-form-checkbox>
+          <b>#내일 도착📦</b>
+        </b-button>
         <!-- <b-form-checkbox value="true" unchecked-value="false" v-model="soldOutStatus">품절 포함</b-form-checkbox> -->
         <b-form-select
           v-model="optionSelected"
@@ -53,6 +49,7 @@
                       variant="outline-primary"
                       size="sm"
                       @click="clickTomorrowArriveStatus"
+                      class="tomorrow-btn"
                       >#내일도착</b-button
                     >
                   </div>
@@ -174,6 +171,11 @@ export default {
     onClickCard(itemId) {
       console.log("반응이");
       this.$router.push("/detail/" + itemId);
+    },
+    onClicktomorrowBtn() {
+      if (this.tomorrowArriveStatus == "false")
+        this.tomorrowArriveStatus = "true";
+      else this.tomorrowArriveStatus = "false";
     },
   },
   watch: {
@@ -349,5 +351,8 @@ body {
   width: auto;
   height: auto;
   padding: 0px 10px 0px 10px;
+}
+.tomorrow-btn {
+  text-align: center;
 }
 </style>
