@@ -1,6 +1,6 @@
 package cjonstyle.best100.domain;
 
-import cjonstyle.best100.domain.dto.BestItem.BestRes;
+import cjonstyle.best100.domain.dto.bestItem.BestRes;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
@@ -44,7 +44,6 @@ public class Best {
     @Column(name="best_itemImage")
     private String itemImage;
 
-    //    dto->entity
     public static Best of(BestRes best) {
         return builder()
                 .id(best.getId())

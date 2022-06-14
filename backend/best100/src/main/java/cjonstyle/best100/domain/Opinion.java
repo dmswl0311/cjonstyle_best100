@@ -1,7 +1,7 @@
 package cjonstyle.best100.domain;
 
-import cjonstyle.best100.domain.dto.Opinion.OpinionReq;
-import cjonstyle.best100.domain.dto.Opinion.OpinionRes;
+import cjonstyle.best100.domain.dto.opinion.OpinionReq;
+import cjonstyle.best100.domain.dto.opinion.OpinionRes;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
@@ -40,8 +40,6 @@ public class Opinion {
 
     @Column(name = "opinion_hate")
     private int hate;  // 싫어요
-
-    //    dto->entity
     public static Opinion of(OpinionRes res) {
         return builder()
                 .id(res.getId())
@@ -53,7 +51,6 @@ public class Opinion {
                 .hate(res.getHate())
                 .build();
     }
-
     public static Opinion of(String itemId, OpinionReq req) {
         return builder()
                 .itemId(itemId)

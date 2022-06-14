@@ -1,7 +1,7 @@
 package cjonstyle.best100.service.item;
 
-import cjonstyle.best100.domain.dto.BestItem.BestCh;
-import cjonstyle.best100.domain.dto.BestItem.BestRes;
+import cjonstyle.best100.domain.dto.bestItem.BestCh;
+import cjonstyle.best100.domain.dto.bestItem.BestRes;
 
 import java.util.List;
 

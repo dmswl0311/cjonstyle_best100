@@ -1,7 +1,7 @@
 package cjonstyle.best100.controller;
 
-import cjonstyle.best100.domain.dto.Opinion.OpinionReq;
-import cjonstyle.best100.domain.dto.Opinion.OpinionRes;
+import cjonstyle.best100.domain.dto.opinion.OpinionReq;
+import cjonstyle.best100.domain.dto.opinion.OpinionRes;
 import cjonstyle.best100.service.opinion.OpinionServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

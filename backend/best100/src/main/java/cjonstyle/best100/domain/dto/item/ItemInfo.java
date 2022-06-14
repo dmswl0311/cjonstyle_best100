@@ -1,4 +1,4 @@
-package cjonstyle.best100.domain.dto.Item;
+package cjonstyle.best100.domain.dto.item;
 
 import lombok.*;
 import java.util.List;

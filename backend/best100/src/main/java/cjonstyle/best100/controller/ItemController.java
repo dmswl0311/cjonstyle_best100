@@ -1,7 +1,7 @@
 package cjonstyle.best100.controller;
 
-import cjonstyle.best100.domain.dto.BestItem.BestCh;
-import cjonstyle.best100.domain.dto.BestItem.BestRes;
+import cjonstyle.best100.domain.dto.bestItem.BestCh;
+import cjonstyle.best100.domain.dto.bestItem.BestRes;
 import cjonstyle.best100.service.item.ItemServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package cjonstyle.best100.domain.dto.Opinion;
+package cjonstyle.best100.domain.dto.opinion;
 import lombok.*;
 @Getter
 @Setter
