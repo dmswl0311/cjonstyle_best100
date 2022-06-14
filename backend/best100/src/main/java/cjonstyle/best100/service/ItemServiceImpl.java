@@ -9,6 +9,7 @@ import cjonstyle.best100.domain.dto.Item.ItemInfo;
 import cjonstyle.best100.repository.ItemRepo;
 import cjonstyle.best100.repository.OpinionRepo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,14 +20,13 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @CrossOrigin("*")
+@Slf4j
 public class ItemServiceImpl implements ItemService {
     private final ItemRepo repo;
     private final String uri1 = "https://display.cjonstyle.com/c/rest/category/getTop100ItemList?type=P"; // BEST 아이템 OPEN API
@@ -98,20 +98,33 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<BestRes> getAllBestItem(String date, String state) {
-//        LocalDate today = LocalDate.now();
-        LocalDate day=LocalDate.parse(date);
-        List<Best> flag = repo.findTopByDate(day);
+        LocalDate today = LocalDate.now();
+        LocalDate inputDate=LocalDate.parse(date);
+
+        //   date가 오늘~어제~그제 들어가는지 확인
+        Calendar day = Calendar.getInstance();
+        day.add(Calendar.DATE , -2);
+        String beforeDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(day.getTime());
+
+        log.info("ItemServiceImpl.getAllBestItem.오늘::"+today);
+        log.info("ItemServiceImpl.getAllBestItem.3일전::"+LocalDate.parse(beforeDate));
+
+        if(inputDate.isBefore(LocalDate.parse(beforeDate)) || !inputDate.isBefore(today.plusDays(1L))){
+            throw new NullPointerException();
+        }
+
+        List<Best> flag = repo.findTopByDate(inputDate);
         if (flag.size() >= 1) saveAllBestItem(); // 오늘 날짜에 저장된 DB가 없다면 api 불러와서 저장
         List<Best> bestList;
         if ("priceAsc".equals(state)) {
             // 낮은 가격순
-            bestList = repo.findAllByDateOrderByPriceAsc(day);
+            bestList = repo.findAllByDateOrderByPriceAsc(inputDate);
         } else if ("priceDesc".equals(state)) {
             // 높은 가격순
-            bestList = repo.findAllByDateOrderByPriceDesc(day);
+            bestList = repo.findAllByDateOrderByPriceDesc(inputDate);
         } else {
             // 없으면 랭킹순
-            bestList = repo.findAllByDateOrderByRank(day);
+            bestList = repo.findAllByDateOrderByRank(inputDate);
         }
 
         return bestList.stream().map(BestRes::of).collect(Collectors.toList());
