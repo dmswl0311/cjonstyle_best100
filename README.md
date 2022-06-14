@@ -16,18 +16,19 @@ test : 테스트 코드 수정에 대한 커밋
 # API 명세서
 
 ## 상품 REST API 
-1. BEST 100 상품을 DB에 저장 (하루에 한번)
+
+### 1. BEST 100 상품을 DB에 저장 (하루에 한번)
 ```
 POST /rest/api/best-item
 ```
-
+#### Response
 ```javascript
 {
   true
 }
 ```
 
-2. BEST 100 상품 전체 조회 
+### 2. BEST 100 상품 전체 조회 
 ```
 GET /rest/api/best-item
 ```
@@ -36,6 +37,7 @@ GET /rest/api/best-item
 | date      | String | "yyyy-MM-DD" 형식으로 조회하고싶은 날짜 입력                                          |
 | state     | String | 정렬을 위한 state / rank(랭킹순), priceDesc(높은가격순), priceAsc(낮은가격순) / 기본값은 rank |
 
+#### Response
 ```javascript
 {
   [
@@ -55,11 +57,11 @@ GET /rest/api/best-item
 }
 ```
 
-3. 상품 BEST 100 순위 및 가격 변동 추이 (3일간)
+### 3. 상품 BEST 100 순위 및 가격 변동 추이 (3일간)
 ```
 GET /rest/api/best-item/{item_id}
 ```
-
+#### Response
 ```javascript
 {
   [
@@ -88,11 +90,11 @@ GET /rest/api/best-item/{item_id}
 }
 ```
 
-4. 상품 상세 정보
+### 4. 상품 상세 정보
 ```
 GET /rest/api/item-info/{item_id}
 ```
-
+#### Response
 ```javascript
 {
     "itemId": "2002237584",
@@ -123,7 +125,7 @@ GET /rest/api/item-info/{item_id}
 }
 ```
 
-5. 내일 배송상품 조회 
+### 5. 내일 배송상품 조회 
 
 ```
 GET /rest/api/best-item/tmarvlYn
@@ -134,7 +136,7 @@ GET /rest/api/best-item/tmarvlYn
 | date      | String | "yyyy-MM-DD" 형식으로 조회하고싶은 날짜 입력                                          |
 | state     | String | 정렬을 위한 state / rank(랭킹순), priceDesc(높은가격순), priceAsc(낮은가격순) / 기본값은 rank |
 
-
+#### Response
 ```javascript
 {
   [
