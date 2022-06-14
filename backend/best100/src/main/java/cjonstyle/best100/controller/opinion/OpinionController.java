@@ -1,4 +1,4 @@
-package cjonstyle.best100.controller;
+package cjonstyle.best100.controller.opinion;
 
 import cjonstyle.best100.domain.dto.opinion.OpinionReq;
 import cjonstyle.best100.domain.dto.opinion.OpinionRes;

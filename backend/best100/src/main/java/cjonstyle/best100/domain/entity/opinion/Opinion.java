@@ -1,4 +1,4 @@
-package cjonstyle.best100.domain;
+package cjonstyle.best100.domain.entity.opinion;
 
 import cjonstyle.best100.domain.dto.opinion.OpinionReq;
 import cjonstyle.best100.domain.dto.opinion.OpinionRes;

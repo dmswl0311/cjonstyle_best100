@@ -1,8 +1,9 @@
 package cjonstyle.best100.service.item;
 
 
-import cjonstyle.best100.domain.Best;
+import cjonstyle.best100.domain.entity.bestItem.Best;
 import cjonstyle.best100.domain.dto.bestItem.BestCh;
+import cjonstyle.best100.domain.dto.bestItem.BestChRes;
 import cjonstyle.best100.domain.dto.bestItem.BestRes;
 import cjonstyle.best100.domain.dto.item.ItemInfo;
 import cjonstyle.best100.repository.item.ItemRepo;
@@ -129,11 +130,31 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<BestCh> getChangeBestItem(String itemId) {
+    public BestChRes getChangeBestItem(String itemId) {
         LocalDate today = LocalDate.now();
         LocalDate preview = LocalDate.now().minusDays(2);
         List<Best> best = repo.findAllByItemIdAndDateBetween(itemId, preview, today);
-        return best.stream().map(BestCh::of).collect(Collectors.toList());
+        Long minPrice=Long.MAX_VALUE;
+        boolean flag=false;
+        List<BestCh> result=best.stream().map(BestCh::of).collect(Collectors.toList());
+//        Long value= Long.valueOf(result.stream()
+//                .mapToInt(x -> Math.toIntExact(x.getPrice()))
+//                .min()
+//                .orElseThrow(NoSuchElementException::new));
+//
+//        List<BestCh> r=result.stream().filter(x -> x.getDate().equals(today)).collect(Collectors.toList());
+//        System.out.println(r);
+//        System.out.println(value);
+        for(BestCh bestCh:result){
+            minPrice=Math.min(bestCh.getPrice(),minPrice);
+//            오늘 날짜의 가격이 최저가인지 판단
+            if(bestCh.getDate().isEqual(today)) {
+                if (bestCh.getPrice().equals(minPrice)) {
+                    flag=true;
+                }
+            }
+        }
+       return new BestChRes(result,flag);
     }
 
     @Override

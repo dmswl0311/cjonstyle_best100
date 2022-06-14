@@ -1,4 +1,4 @@
-package cjonstyle.best100.domain;
+package cjonstyle.best100.domain.entity.bestItem;
 
 import cjonstyle.best100.domain.dto.bestItem.BestRes;
 import com.fasterxml.jackson.annotation.JsonFormat;

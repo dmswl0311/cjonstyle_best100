@@ -1,6 +1,6 @@
 package cjonstyle.best100.domain.dto.bestItem;
 
-import cjonstyle.best100.domain.Best;
+import cjonstyle.best100.domain.entity.bestItem.Best;
 import lombok.*;
 
 import java.time.LocalDate;

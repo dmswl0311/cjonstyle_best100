@@ -1,6 +1,6 @@
 package cjonstyle.best100.domain.dto.opinion;
 
-import cjonstyle.best100.domain.Opinion;
+import cjonstyle.best100.domain.entity.opinion.Opinion;
 import lombok.*;
 
 import java.time.LocalDate;

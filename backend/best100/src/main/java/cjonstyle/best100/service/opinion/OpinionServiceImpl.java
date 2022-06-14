@@ -1,6 +1,6 @@
 package cjonstyle.best100.service.opinion;
 
-import cjonstyle.best100.domain.Opinion;
+import cjonstyle.best100.domain.entity.opinion.Opinion;
 import cjonstyle.best100.domain.dto.opinion.OpinionReq;
 import cjonstyle.best100.domain.dto.opinion.OpinionRes;
 import cjonstyle.best100.repository.opinion.OpinionRepo;

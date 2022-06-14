@@ -1,5 +1,5 @@
 package cjonstyle.best100.domain.dto.bestItem;
-import cjonstyle.best100.domain.Best;
+import cjonstyle.best100.domain.entity.bestItem.Best;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -15,6 +15,7 @@ public class BestCh {
     private LocalDate date; // 날짜
     private Long price; // 가격
     private int rank;  // 순위
+    private boolean minPriceFlag; //최근 3일간 최저가 유무
     public static BestCh of(Best best) {
         return builder()
                 .id(best.getId())

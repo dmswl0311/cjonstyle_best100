@@ -1,7 +1,8 @@
-package cjonstyle.best100.controller;
+package cjonstyle.best100.controller.item;
 
-import cjonstyle.best100.domain.dto.bestItem.BestCh;
+import cjonstyle.best100.domain.dto.bestItem.BestChRes;
 import cjonstyle.best100.domain.dto.bestItem.BestRes;
+import cjonstyle.best100.domain.dto.item.ItemInfo;
 import cjonstyle.best100.service.item.ItemServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,15 +43,15 @@ public class ItemController {
 
     // BEST100 순위 및 가격 변동 추이 API
     @GetMapping("/best-item/{item_id}")
-    public ResponseEntity<List<BestCh>> getChangeBestItem(@PathVariable("item_id") String itemId) {
-        List<BestCh> res = service.getChangeBestItem(itemId);
+    public ResponseEntity<BestChRes> getChangeBestItem(@PathVariable("item_id") String itemId) {
+        BestChRes res = service.getChangeBestItem(itemId);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     // 상품 정보 API
     @GetMapping("/item-info/{item_id}")
-    public ResponseEntity<Object> getItemInfo(@PathVariable("item_id") String itemId) {
-        Object res = service.getItemInfo(itemId);
+    public ResponseEntity<ItemInfo> getItemInfo(@PathVariable("item_id") String itemId) {
+        ItemInfo res = service.getItemInfo(itemId);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 

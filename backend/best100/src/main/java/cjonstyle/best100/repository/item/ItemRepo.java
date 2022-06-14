@@ -1,6 +1,6 @@
 package cjonstyle.best100.repository.item;
 
-import cjonstyle.best100.domain.Best;
+import cjonstyle.best100.domain.entity.bestItem.Best;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
