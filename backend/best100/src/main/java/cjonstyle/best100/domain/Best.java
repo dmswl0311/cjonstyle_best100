@@ -23,6 +23,7 @@ public class Best {
     private String itemId; //상품 코드
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    @Column(name = "best_date")
     private LocalDate date; // 날짜
 
     @Column(name = "best_price")
