@@ -149,7 +149,8 @@ public class ItemServiceImpl implements ItemService {
             }
 
             JSONObject detailInfo = (JSONObject) ItemInfoResult.get("detailInfo");
-            Long price = (Long) detailInfo.get("slPrc"); // 가격
+            Long oriPrice = (Long) detailInfo.get("slPrc"); // 가격
+            Long price = (Long) detailInfo.get("clpSlPrc");
             String slCls = detailInfo.get("slCls").toString(); // 상품 상태 정보
             String itemName = detailInfo.get("dispItemName").toString(); // 상품명
             String vendCode = detailInfo.get("mainVenCd").toString();
@@ -172,6 +173,7 @@ public class ItemServiceImpl implements ItemService {
             item.setImages(images);
             item.setItemId(itemId);
             item.setPrice(price);
+            item.setOriPrice(oriPrice);
             item.setSlCls(slCls);
             item.setItemName(itemName);
             item.setOrder(order);
@@ -179,9 +181,9 @@ public class ItemServiceImpl implements ItemService {
             item.setItemReviewAvgScore(ReviewScore);
             item.setGrade(grade);
             item.setTmarvlYn(tmarvlYn);
-            List<String> cards=getItemCardInfo(itemId, price, vendCode, mdCode, brandCode, typeCode);
-            item.setCardPrice(Long.valueOf(cards.get(cards.size()-1)));
-            item.setCards(cards.subList(0,cards.size()-1));
+            List<String> cards = getItemCardInfo(itemId, price, vendCode, mdCode, brandCode, typeCode);
+            item.setCardPrice(Long.valueOf(cards.get(cards.size() - 1)));
+            item.setCards(cards.subList(0, cards.size() - 1));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -263,7 +265,7 @@ public class ItemServiceImpl implements ItemService {
                 "&customerPrice=" + price +
                 "&inflowGroupCode=G0001&dispAreaCode=M";
         String result = "";
-        List<String> list=new ArrayList<>();
+        List<String> list = new ArrayList<>();
         try {
             URL url = new URL(uri);
             BufferedReader bf;
@@ -275,17 +277,17 @@ public class ItemServiceImpl implements ItemService {
 
             JSONObject CardInfoResult = (JSONObject) jsonObject.get("result");
             JSONArray CardInfo = (JSONArray) CardInfoResult.get("cardPromotions");
-            Long maxPrice=price;
+            Long maxPrice = price;
             for (int i = 0; i < CardInfo.size(); i++) {
                 JSONObject card = (JSONObject) CardInfo.get(i);
-                String cardName=card.get("cardName").toString();
-                String promText=card.get("promText").toString();
-                String dcVal=card.get("dcVal").toString();
-                String discountUnit=card.get("discountUnit").toString();
+                String cardName = card.get("cardName").toString();
+                String promText = card.get("promText").toString();
+                String dcVal = card.get("dcVal").toString();
+                String discountUnit = card.get("discountUnit").toString();
                 String discountPrice = card.get("discountPrice").toString();
                 String salePrice = card.get("salePrice").toString();
-                String str=cardName+" "+promText+" "+dcVal+discountUnit+" "+salePrice+"원 ("+discountPrice+"원 할인)";
-                maxPrice=maxPrice>Long.parseLong(salePrice)?Long.parseLong(salePrice):maxPrice;
+                String str = cardName + " " + promText + " " + dcVal + discountUnit + " " + salePrice + "원 (" + discountPrice + "원 할인)";
+                maxPrice = maxPrice > Long.parseLong(salePrice) ? Long.parseLong(salePrice) : maxPrice;
                 list.add(str);
             }
             list.add(maxPrice.toString());

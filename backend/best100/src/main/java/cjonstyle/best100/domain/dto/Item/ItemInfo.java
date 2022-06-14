@@ -13,7 +13,8 @@ import java.util.List;
 public class ItemInfo {
     private String itemId; //상품 코드
     private String itemName; // 상품명
-    private Long price; // 가격
+    private Long oriPrice; // 가격
+    private Long price; // 실제 할인 가격
     private int order; // 현재까지 구매 갯수
     private String orderIsShow; // 구매 갯수 공개여부
     private Long cardPrice; // 최대 카드 혜택가
