@@ -1,5 +1,12 @@
 # cjonstyle_best100
 
+# 기술 스택
+
+| |기술 스택|
+|------|---|
+|Back-End|JAVA, Spring Boot, MySQL|
+|Front-End|Vue.js, HTML, CSS|
+
 # Git Commit Message Convention
 ```
 feat : 새로운 기능에 대한 커밋
