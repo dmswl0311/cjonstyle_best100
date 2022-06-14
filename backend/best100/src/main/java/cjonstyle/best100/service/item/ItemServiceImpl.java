@@ -1,13 +1,11 @@
-package cjonstyle.best100.service;
+package cjonstyle.best100.service.item;
 
 
 import cjonstyle.best100.domain.Best;
-import cjonstyle.best100.domain.Opinion;
 import cjonstyle.best100.domain.dto.BestItem.BestCh;
 import cjonstyle.best100.domain.dto.BestItem.BestRes;
 import cjonstyle.best100.domain.dto.Item.ItemInfo;
-import cjonstyle.best100.repository.ItemRepo;
-import cjonstyle.best100.repository.OpinionRepo;
+import cjonstyle.best100.repository.item.ItemRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;

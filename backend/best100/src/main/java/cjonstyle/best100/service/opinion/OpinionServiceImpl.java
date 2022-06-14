@@ -1,11 +1,10 @@
-package cjonstyle.best100.service;
+package cjonstyle.best100.service.opinion;
 
 import cjonstyle.best100.domain.Opinion;
 import cjonstyle.best100.domain.dto.Opinion.OpinionReq;
 import cjonstyle.best100.domain.dto.Opinion.OpinionRes;
-import cjonstyle.best100.repository.OpinionRepo;
+import cjonstyle.best100.repository.opinion.OpinionRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

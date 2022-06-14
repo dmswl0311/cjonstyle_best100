@@ -1,4 +1,4 @@
-package cjonstyle.best100.repository;
+package cjonstyle.best100.repository.opinion;
 
 import cjonstyle.best100.domain.Opinion;
 import org.springframework.data.jpa.repository.JpaRepository;

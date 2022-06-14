@@ -1,4 +1,4 @@
-package cjonstyle.best100.service;
+package cjonstyle.best100.service.item;
 
 import cjonstyle.best100.domain.dto.BestItem.BestCh;
 import cjonstyle.best100.domain.dto.BestItem.BestRes;
