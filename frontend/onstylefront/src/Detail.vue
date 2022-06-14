@@ -67,29 +67,39 @@
             />
           </div>
           <!-- 가격 차트 -->
-          <div>
-            <div v-if="minPriceFlag">
-              <h4>최근 3일 중 최저가입니다!</h4>
-              <b-icon icon="arrow-down" aria-hidden="true"></b-icon>
-            </div>
-            <div v-else>
-              <div v-if="minPriceFlag">
-                <h4>최저가가 아닙니다.</h4>
-                <b-icon icon="arrow-up" aria-hidden="true"></b-icon>
-              </div>
-            </div>
-            <Bar
-              :chart-options="chartOptions"
-              :chart-data="chartData2"
-              :chart-id="chartId"
-              :dataset-id-key="datasetIdKey"
-              :plugins="plugins"
-              :css-classes="cssClasses"
-              :styles="styles"
-              :width="width"
-              :height="height"
-            />
-          </div>
+          <b-col>
+            <b-row
+              ><div class="minPrice-box">
+                <div v-if="minPriceFlag">
+                  <h4>
+                    최근 3일 중
+                    <span class="half-highlight"
+                      ><b-icon icon="arrow-down" aria-hidden="true"></b-icon
+                      >최저가</span
+                    >입니다!
+                  </h4>
+                </div>
+                <div v-else>
+                  <h4>
+                    <b-icon icon="arrow-up" aria-hidden="true"></b-icon>
+                    최저가가 아닙니다
+                  </h4>
+                </div>
+              </div></b-row
+            >
+            <b-row
+              ><Bar
+                :chart-options="chartOptions"
+                :chart-data="chartData2"
+                :chart-id="chartId"
+                :dataset-id-key="datasetIdKey"
+                :plugins="plugins"
+                :css-classes="cssClasses"
+                :styles="styles"
+                :width="width"
+                :height="370"
+            /></b-row>
+          </b-col>
         </div>
         <!-- 평점 -->
         <div class="review-box">
@@ -422,27 +432,16 @@ export default {
   },
   methods: {
     clipboardShare() {
-      // 1. 새로운 element 생성
       var tmpTextarea = document.createElement("textarea");
-
-      // 2. 해당 element에 복사하고자 하는 value 저장
       tmpTextarea.value = document.location.href;
-
-      // 3. 해당 element를 화면에 안보이는 곳에 위치
       tmpTextarea.setAttribute("readonly", "");
       tmpTextarea.style.position = "absolute";
       tmpTextarea.style.left = "-9999px";
       document.body.appendChild(tmpTextarea);
-
-      // 4. 해당 element의 value를 시스템 함수를 호출하여 복사
       tmpTextarea.select();
       tmpTextarea.setSelectionRange(0, 9999); // 셀렉트 범위 설정
       var successChk = document.execCommand("copy");
-
-      // 5. 해당 element 삭제
       document.body.removeChild(tmpTextarea);
-
-      // 클립보드 성공여부 확인
       if (!successChk) {
         alert("클립보드 복사에 실패하였습니다.");
       } else {
@@ -695,5 +694,11 @@ function getDateFormat(_day) {
   margin-top: 1rem;
   display: flex;
   float: right;
+}
+.minPrice-box {
+  text-align: center;
+}
+.half-highlight {
+  background: linear-gradient(to top, #ffe6ff 60%, transparent 50%);
 }
 </style>
