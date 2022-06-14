@@ -104,23 +104,28 @@
         <!-- 평점 -->
         <div class="review-box">
           <b-row>
-            <b-col> 전체 평점 {{ item.itemReviewAvgScore }} </b-col>
             <b-col>
-              <div>
-                품질 점수
-                <p v-if="item.grade[0] == 0">없음</p>
-                <p v-else>{{ item.grade[0] }}</p>
-              </div>
-              <div>
-                디자인 점수
-                <p v-if="item.grade[1] == 0">없음</p>
-                <p v-else>{{ item.grade[1] }}</p>
-              </div>
-              <div>
-                한달 사용 점수
-                <p v-if="item.grade[2] == 0">없음</p>
-                <p v-else>{{ item.grade[2] }}</p>
-              </div>
+              <h4>전체 평점 {{ item.itemReviewAvgScore }}</h4>
+              <b-form-rating :value="item.itemReviewAvgScore"></b-form-rating>
+            </b-col>
+            <b-col>
+              <b-row>
+                <b-col>
+                  품질 점수
+                  <p v-if="item.grade[0] == 0" class="qulity-box">없음</p>
+                  <p v-else class="qulity-box">{{ item.grade[0] }}/100</p>
+                </b-col>
+                <b-col>
+                  디자인 점수
+                  <p v-if="item.grade[1] == 0" class="qulity-box">없음</p>
+                  <p v-else class="qulity-box">{{ item.grade[1] }}/100</p>
+                </b-col>
+                <b-col>
+                  한달 사용 점수
+                  <p v-if="item.grade[2] == 0" class="qulity-box">없음</p>
+                  <p v-else class="qulity-box">{{ item.grade[2] }}/100</p>
+                </b-col>
+              </b-row>
             </b-col>
           </b-row>
         </div>
@@ -624,7 +629,7 @@ function getDateFormat(_day) {
 
 <style>
 .container {
-  margin-bottom: 3rem;
+  margin-bottom: 5rem;
 }
 .item-price {
   text-align: right;
@@ -641,10 +646,13 @@ function getDateFormat(_day) {
   background-color: white;
 }
 .review-box {
-  margin-top: 2rem;
+  padding: 2rem;
+  margin-top: 4rem;
+  margin-bottom: 4rem;
   background-color: #fafafa;
 }
 .opinion-box {
+  padding: 3rem;
   background-color: #fafafa;
 }
 .opinion-sort-btn {
@@ -700,5 +708,8 @@ function getDateFormat(_day) {
 }
 .half-highlight {
   background: linear-gradient(to top, #ffe6ff 60%, transparent 50%);
+}
+.qulity-box {
+  font-size: 2rem;
 }
 </style>

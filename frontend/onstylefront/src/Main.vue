@@ -309,7 +309,6 @@ function getDateFormat(_day) {
 <style scoped>
 #app {
   content-visibility: auto;
-  contain-intrinsic-size: 1px 5000px;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
