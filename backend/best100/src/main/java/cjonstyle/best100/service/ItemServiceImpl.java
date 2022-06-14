@@ -97,20 +97,21 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<BestRes> getAllBestItem(String state) {
-        LocalDate today = LocalDate.now();
-        List<Best> flag = repo.findTopByDate(today);
+    public List<BestRes> getAllBestItem(String date, String state) {
+//        LocalDate today = LocalDate.now();
+        LocalDate day=LocalDate.parse(date);
+        List<Best> flag = repo.findTopByDate(day);
         if (flag.size() >= 1) saveAllBestItem(); // 오늘 날짜에 저장된 DB가 없다면 api 불러와서 저장
         List<Best> bestList;
         if ("priceAsc".equals(state)) {
             // 낮은 가격순
-            bestList = repo.findAllByDateOrderByPriceAsc(today);
+            bestList = repo.findAllByDateOrderByPriceAsc(day);
         } else if ("priceDesc".equals(state)) {
             // 높은 가격순
-            bestList = repo.findAllByDateOrderByPriceDesc(today);
+            bestList = repo.findAllByDateOrderByPriceDesc(day);
         } else {
             // 없으면 랭킹순
-            bestList = repo.findAllByDateOrderByRank(today);
+            bestList = repo.findAllByDateOrderByRank(day);
         }
 
         return bestList.stream().map(BestRes::of).collect(Collectors.toList());
@@ -183,8 +184,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<BestRes> getAllBestItemTmarvlYn(String state) {
-        List<BestRes> res = getAllBestItem(state);
+    public List<BestRes> getAllBestItemTmarvlYn(String date, String state) {
+        List<BestRes> res = getAllBestItem(date,state);
         List<BestRes> result = new ArrayList<>();
         for (BestRes best : res) {
             if ("T".equals(best.getTmarvlYn())) {

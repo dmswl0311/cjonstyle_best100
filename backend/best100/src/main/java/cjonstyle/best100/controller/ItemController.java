@@ -28,14 +28,15 @@ public class ItemController {
     }
 
     /**
+     * date : 특정일
      * state:
      * priceDesc 가격 내림차순 (높은가격순)
      * priceAsc 가격 오름차순 (낮은가격순)
      * rank 랭킹순
      */
     @GetMapping("/best-item")
-    public ResponseEntity<List<BestRes>> getAllBestItem(@RequestParam("state") String state) {
-        List<BestRes> res = service.getAllBestItem(state);
+    public ResponseEntity<List<BestRes>> getAllBestItem(@RequestParam("date") String date,@RequestParam("state") String state) {
+        List<BestRes> res = service.getAllBestItem(date,state);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
@@ -55,8 +56,10 @@ public class ItemController {
 
     // 내일 배송 true
     @GetMapping("/best-item/tmarvlYn")
-    public ResponseEntity<List<BestRes>> getAllBestItemTmarvlYn(@RequestParam("state") String state) {
-        List<BestRes> res = service.getAllBestItemTmarvlYn(state);
+    public ResponseEntity<List<BestRes>> getAllBestItemTmarvlYn(@RequestParam("date") String date,@RequestParam("state") String state) {
+        List<BestRes> res = service.getAllBestItemTmarvlYn(date,state);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
+
+
 }
