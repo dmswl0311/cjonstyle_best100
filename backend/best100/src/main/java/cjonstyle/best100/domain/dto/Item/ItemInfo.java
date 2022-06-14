@@ -1,9 +1,7 @@
 package cjonstyle.best100.domain.dto.Item;
 
 import lombok.*;
-
 import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor

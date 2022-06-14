@@ -1,10 +1,5 @@
 package cjonstyle.best100.domain.dto.Opinion;
-
-import cjonstyle.best100.domain.Opinion;
 import lombok.*;
-
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @AllArgsConstructor

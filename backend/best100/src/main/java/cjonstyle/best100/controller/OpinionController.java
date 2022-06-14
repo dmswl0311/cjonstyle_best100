@@ -22,14 +22,14 @@ public class OpinionController {
     // 상품에 대한 모든 한줄 의견
     @GetMapping("/{item_id}")
     public ResponseEntity<List<OpinionRes>> getAllOpinion(@PathVariable("item_id") String itemId, @RequestParam("state") String state) {
-        List<OpinionRes> res = service.getAllOpinion(itemId,state);
+        List<OpinionRes> res = service.getAllOpinion(itemId, state);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     // 상품에 대한 한줄 의견 등록
     @PostMapping("/{item_id}")
     public ResponseEntity<OpinionRes> saveOpinion(@PathVariable("item_id") String itemId, @RequestBody OpinionReq req) {
-        OpinionRes res = service.saveOpinion(itemId,req);
+        OpinionRes res = service.saveOpinion(itemId, req);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
@@ -47,7 +47,8 @@ public class OpinionController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
-    /**  상품에 대한 좋아요 or 싫어요
+    /**
+     * 상품에 대한 좋아요 or 싫어요
      * expr
      * like: 좋아요
      * hate: 싫어요

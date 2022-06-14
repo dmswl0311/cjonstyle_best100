@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OpinionServiceImpl implements OpinionService {
     private final OpinionRepo repo;
-
     @Override
     public List<OpinionRes> getAllOpinion(String itemId, String state) {
         List<Opinion> opinions = null;

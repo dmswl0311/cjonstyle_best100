@@ -22,7 +22,6 @@ public class BestRes {
     private String itemName;
     private String itemImage;
 
-
     public static BestRes of(Best best) {
         return builder()
                 .id(best.getId())

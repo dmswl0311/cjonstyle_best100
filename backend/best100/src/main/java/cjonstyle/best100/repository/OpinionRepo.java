@@ -8,9 +8,7 @@ import java.util.Optional;
 
 public interface OpinionRepo extends JpaRepository<Opinion, Long> {
     List<Opinion> findAllByItemIdOrderByDateDescIdDesc(String itemId);
-
     List<Opinion> findAllByItemIdOrderByLikeDescIdDesc(String itemId);
-
     Optional<Opinion> findById(Long opinionId);
 
 

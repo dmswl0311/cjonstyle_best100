@@ -1,10 +1,8 @@
 package cjonstyle.best100.domain.dto.BestItem;
-
 import cjonstyle.best100.domain.Best;
 import lombok.*;
 
 import java.time.LocalDate;
-
 @Getter
 @Setter
 @AllArgsConstructor

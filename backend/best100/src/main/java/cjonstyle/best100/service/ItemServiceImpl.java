@@ -129,7 +129,7 @@ public class ItemServiceImpl implements ItemService {
         String result = "";
         String uri = "https://display.cjonstyle.com/c/rest/item/" + itemId + "/itemInfo.json?channelCode=50001002&isEmployee=false";
         JSONObject jsonObject = null;
-        ItemInfo item=null;
+        ItemInfo item = null;
         try {
             URL url = new URL(uri);
             BufferedReader bf;
@@ -171,10 +171,10 @@ public class ItemServiceImpl implements ItemService {
             int[] grade = getItemGrade(itemId); // 품질, 디자인, 한달 사용 점수
 
             List<String> cards = getItemCardInfo(itemId, price, vendCode, mdCode, brandCode, typeCode);
-            Long cardPrice=Long.valueOf(cards.get(cards.size() - 1));
-            cards=cards.subList(0, cards.size() - 1);
+            Long cardPrice = Long.valueOf(cards.get(cards.size() - 1));
+            cards = cards.subList(0, cards.size() - 1);
 
-            item = new ItemInfo(itemId,itemName,oriPrice,price,order,orderIsShow,cardPrice,images,ReviewScore,grade,tmarvlYn,slCls,cards);
+            item = new ItemInfo(itemId, itemName, oriPrice, price, order, orderIsShow, cardPrice, images, ReviewScore, grade, tmarvlYn, slCls, cards);
 
         } catch (Exception e) {
             e.printStackTrace();
