@@ -212,6 +212,12 @@
           </div>
         </div>
       </div>
+      <div>
+        <b-jumbotron header="품절된 상품입니다!">
+          <p>죄송합니다. 상품 정보를 불러올 수 없습니다.</p>
+          <b-button variant="primary" href="/">홈으로 가기</b-button>
+        </b-jumbotron>
+      </div>
     </b-overlay>
   </div>
 </template>
