@@ -22,6 +22,7 @@ public class ItemController {
 
     /**
      * BEST 100 상품을 DB에 저장 (하루에 한번)
+     *
      * @return
      */
     @PostMapping("/best-item")
@@ -31,17 +32,19 @@ public class ItemController {
 
     /**
      * BEST 100 상품 전체 조회
-     * @param date "yyyy-MM-DD" 형식으로 조회하고싶은 날짜 입력
+     *
+     * @param date  "yyyy-MM-DD" 형식으로 조회하고싶은 날짜 입력
      * @param state 정렬을 위한 state / rank(랭킹순), priceDesc(높은가격순), priceAsc(낮은가격순) / 기본값은 rank
      * @return
      */
     @GetMapping("/best-item")
-    public ResponseEntity<List<BestRes>> getAllBestItem(@RequestParam("date") String date,@RequestParam("state") String state) {
-        return new ResponseEntity<>(service.getAllBestItem(date,state), HttpStatus.OK);
+    public ResponseEntity<List<BestRes>> getAllBestItem(@RequestParam("date") String date, @RequestParam("state") String state) {
+        return new ResponseEntity<>(service.getAllBestItem(date, state), HttpStatus.OK);
     }
 
     /**
      * 상품 BEST 100 순위 및 가격 변동 추이 (3일간)와 현재 가격 최저가 여부
+     *
      * @param itemId 상품 아이디
      * @return
      */
@@ -52,6 +55,7 @@ public class ItemController {
 
     /**
      * 상품 상세 정보
+     *
      * @param itemId 상품 아이디
      * @return
      */
@@ -62,13 +66,14 @@ public class ItemController {
 
     /**
      * 내일 배송상품 조회
-     * @param date "yyyy-MM-DD" 형식으로 조회하고싶은 날짜 입력
+     *
+     * @param date  "yyyy-MM-DD" 형식으로 조회하고싶은 날짜 입력
      * @param state 정렬을 위한 state / rank(랭킹순), priceDesc(높은가격순), priceAsc(낮은가격순) / 기본값은 rank
      * @return
      */
     @GetMapping("/best-item/tmarvlYn")
-    public ResponseEntity<List<BestRes>> getAllBestItemTmarvlYn(@RequestParam("date") String date,@RequestParam("state") String state) {
-        return new ResponseEntity<>(service.getAllBestItemTmarvlYn(date,state), HttpStatus.OK);
+    public ResponseEntity<List<BestRes>> getAllBestItemTmarvlYn(@RequestParam("date") String date, @RequestParam("state") String state) {
+        return new ResponseEntity<>(service.getAllBestItemTmarvlYn(date, state), HttpStatus.OK);
     }
 
 

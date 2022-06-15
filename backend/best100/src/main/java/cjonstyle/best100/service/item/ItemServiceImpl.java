@@ -12,10 +12,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -29,7 +31,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ItemServiceImpl implements ItemService {
     private final ItemRepo repo;
-    private final String uri1 = "https://display.cjonstyle.com/c/rest/category/getTop100ItemList?type=P"; // BEST 아이템 OPEN API
+    private final String bestItemUri = "https://display.cjonstyle.com/c/rest/category/getTop100ItemList?type=P"; // BEST 아이템 OPEN API
+    private final String itemInfoUriBase1 = "https://display.cjonstyle.com/c/rest/item/"; // 아이템 기본정보1 REST API
+    private final String itemInfoUriBase2 = "/itemInfo.json?channelCode=50001002&isEmployee=false"; // 아이템 기본정보2 REST API
+    private final String reviewInfoUriBase1 = "https://item.cjonstyle.com/celebshop/review/rest/itemReviewInfo?itemCode="; // 아이템 리뷰정보1 REST API
+    private final String reviewInfoUriBase2 = "&channelCode=50001002"; // 아이템 리뷰정보2 REST API
+    private final String deliveryInfoUriBase2 = "/explainAreaInfo?channelCode=50001002&isMyzone=false&isEmployee=false"; // 아이템 택배정보2 REST API
 
     @Override
     public boolean saveAllBestItem() {
@@ -41,49 +48,32 @@ public class ItemServiceImpl implements ItemService {
         if (flag.size() >= 1) return false;
 
         try {
-            String result = "";
-            URL url = new URL(uri1);
-            BufferedReader bf;
-            bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-            result = bf.readLine();
-
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
-
-            JSONObject ItemInfoResult = (JSONObject) jsonObject.get("result");
-            JSONArray ItemInfo = (JSONArray) ItemInfoResult.get("cateTop100ItemTupleList");
-
+            JSONObject api = apiTemplate(bestItemUri);
+            JSONArray ItemInfo = (JSONArray) api.get("cateTop100ItemTupleList");
             BestRes best;
             for (int i = 0; i < ItemInfo.size(); i++) {
                 best = new BestRes();
                 JSONObject item = (JSONObject) ItemInfo.get(i);
-                String itemImage = "https:" + item.get("itemImgUrl").toString();
-                // 상품코드
-                String itemId = (String) item.get("itemCd");
-                // 가격
+                String itemImage = "https:" + item.get("itemImgUrl").toString(); // 상품이미지
+                String itemId = (String) item.get("itemCd"); // 상품아이디
                 JSONObject info = (JSONObject) item.get("rmItempriceInfo");
-                Long price = (Long) info.get("salePrice");
-                // 내일 배송 여부
-                boolean tmarvlYn = (boolean) info.get("tmarvlYn");
-                if (tmarvlYn) best.setTmarvlYn("T");
-                else best.setTmarvlYn("F");
-                // 상품명
-                String itemName = info.get("displayItemName").toString();
+                Long price = (Long) info.get("salePrice"); // 가격
+                boolean tmarvlYn = (boolean) info.get("tmarvlYn"); // 내일 배송 여부
+                String itemName = info.get("displayItemName").toString(); // 상품명
 
                 // 상품 상태 불러오기
-                String uri2 = "https://display.cjonstyle.com/c/rest/item/" + itemId + "/itemInfo.json?channelCode=50001002&isEmployee=false";
-                URL url2 = new URL(uri2);
-                bf = new BufferedReader(new InputStreamReader(url2.openStream(), "UTF-8"));
-                result = bf.readLine();
-                jsonObject = (JSONObject) jsonParser.parse(result);
-                ItemInfoResult = (JSONObject) jsonObject.get("result");
-                info = (JSONObject) ItemInfoResult.get("detailInfo");
-                String slCls = (String) info.get("slCls");
+                String itemInfoUri = itemInfoUriBase1 + itemId + itemInfoUriBase2;
+                api = apiTemplate(itemInfoUri);
+
+                info = (JSONObject) api.get("detailInfo");
+                String slCls = (String) info.get("slCls"); // 상품 상태
 
                 // 아이템 저장
                 best.setItemId(itemId);
                 best.setPrice(price);
                 best.setRank(i + 1);
+                if (tmarvlYn) best.setTmarvlYn("T");
+                else best.setTmarvlYn("F");
                 best.setSlCls(slCls);
                 best.setItemName(itemName);
                 best.setItemImage(itemImage);
@@ -99,30 +89,24 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<BestRes> getAllBestItem(String date, String state) {
         LocalDate today = LocalDate.now();
-        LocalDate inputDate=LocalDate.parse(date);
+        LocalDate inputDate = LocalDate.parse(date);
 
-        //   date가 오늘~어제~그제 들어가는지 확인
+        //   입력 date가 오늘~3일전에 포함되는지 확인
         Calendar day = Calendar.getInstance();
-        day.add(Calendar.DATE , -2);
+        day.add(Calendar.DATE, -2);
         String beforeDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(day.getTime());
 
-        if(inputDate.isBefore(LocalDate.parse(beforeDate)) || !inputDate.isBefore(today.plusDays(1L))){
+        if (inputDate.isBefore(LocalDate.parse(beforeDate)) || !inputDate.isBefore(today.plusDays(1L))) {
             throw new NullPointerException();
         }
 
         List<Best> flag = repo.findTopByDate(inputDate);
-        if (flag.size() >= 1) saveAllBestItem(); // 오늘 날짜에 저장된 DB가 없다면 api 불러와서 저장
+        if (flag.size() >= 1) saveAllBestItem(); // 오늘 날짜에 저장된 DB가 없다면 저장
+
         List<Best> bestList;
-        if ("priceAsc".equals(state)) {
-            // 낮은 가격순
-            bestList = repo.findAllByDateOrderByPriceAsc(inputDate);
-        } else if ("priceDesc".equals(state)) {
-            // 높은 가격순
-            bestList = repo.findAllByDateOrderByPriceDesc(inputDate);
-        } else {
-            // 없으면 랭킹순
-            bestList = repo.findAllByDateOrderByRank(inputDate);
-        }
+        if ("priceAsc".equals(state)) bestList = repo.findAllByDateOrderByPriceAsc(inputDate);
+        else if ("priceDesc".equals(state)) bestList = repo.findAllByDateOrderByPriceDesc(inputDate);
+        else bestList = repo.findAllByDateOrderByRank(inputDate);
 
         return bestList.stream().map(BestRes::of).collect(Collectors.toList());
     }
@@ -130,54 +114,35 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public BestChRes getChangeBestItem(String itemId) {
         LocalDate today = LocalDate.now();
-        LocalDate preview = LocalDate.now().minusDays(2);
-        List<Best> best = repo.findAllByItemIdAndDateBetween(itemId, preview, today);
-        Long minPrice=Long.MAX_VALUE;
-        boolean flag=false;
-        List<BestCh> result=best.stream().map(BestCh::of).collect(Collectors.toList());
-//        Long value= Long.valueOf(result.stream()
-//                .mapToInt(x -> Math.toIntExact(x.getPrice()))
-//                .min()
-//                .orElseThrow(NoSuchElementException::new));
-//
-//        List<BestCh> r=result.stream().filter(x -> x.getDate().equals(today)).collect(Collectors.toList());
-        for(BestCh bestCh:result){
-            minPrice=Math.min(bestCh.getPrice(),minPrice);
-//            오늘 날짜의 가격이 최저가인지 판단
-            if(bestCh.getDate().isEqual(today)) {
-                if (bestCh.getPrice().equals(minPrice)) {
-                    flag=true;
-                }
-            }
-        }
-       return new BestChRes(result,flag);
+        LocalDate before = LocalDate.now().minusDays(2);
+        List<Best> best = repo.findAllByItemIdAndDateBetween(itemId, before, today);
+        boolean flag = false;
+        List<BestCh> result = best.stream().map(BestCh::of).collect(Collectors.toList());
+        Long value = Long.valueOf(result.stream()
+                .mapToInt(x -> Math.toIntExact(x.getPrice()))
+                .min()
+                .orElseThrow(NoSuchElementException::new)); // 최소 가격 구하기
+        BestCh todayBestCh = result.get(result.size() - 1); // 오늘 날짜의 가격과 최소가격 비교
+        if (todayBestCh.getPrice().equals(value)) flag = true;
+        return new BestChRes(result, flag);
     }
 
     @Override
     public ItemInfo getItemInfo(String itemId) {
-        String result = "";
-        String uri = "https://display.cjonstyle.com/c/rest/item/" + itemId + "/itemInfo.json?channelCode=50001002&isEmployee=false";
-        JSONObject jsonObject = null;
+        String uri = itemInfoUriBase1 + itemId + itemInfoUriBase2;
         ItemInfo item = null;
         try {
-            URL url = new URL(uri);
-            BufferedReader bf;
-            bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-            result = bf.readLine();
-
-            JSONParser jsonParser = new JSONParser();
-            jsonObject = (JSONObject) jsonParser.parse(result);
-            JSONObject ItemInfoResult = (JSONObject) jsonObject.get("result");
+            JSONObject api = apiTemplate(uri);
 
             // 이미지
-            JSONObject ImagesInfo = (JSONObject) ItemInfoResult.get("imagesInfo");
+            JSONObject ImagesInfo = (JSONObject) api.get("imagesInfo");
             JSONArray imagesArray = (JSONArray) ImagesInfo.get("itemImages");
             List<String> images = new ArrayList<>();
             for (Object image : imagesArray) {
                 images.add("https:" + (String) image);
             }
-
-            JSONObject detailInfo = (JSONObject) ItemInfoResult.get("detailInfo");
+            String ReviewScore = api.get("itemReviewAvgScore").toString(); // 리뷰 점수
+            JSONObject detailInfo = (JSONObject) api.get("detailInfo");
 
 //            JSONObject PriceInfo=(JSONObject) detailInfo.get("itemPrice");
 //            Long oriPrice=(Long) PriceInfo.get("salePrice");
@@ -196,21 +161,17 @@ public class ItemServiceImpl implements ItemService {
             JSONObject orderInfo = (JSONObject) detailInfo.get("orderCntInfo");
             int order = Integer.valueOf(orderInfo.get("orderCnt").toString()); // 구매 갯수
             String orderIsShow = orderInfo.get("isShowOrderCnt").toString(); // 구매 갯수 공개 여부
-            String ReviewScore = ItemInfoResult.get("itemReviewAvgScore").toString(); // 리뷰 점수
 
             boolean flag = getItemTmarvlYn(itemId); // 내일 배송 여부
-            String tmarvlYn;
+            String tmarvlYn = "F";
             if (flag) tmarvlYn = "T";
-            else tmarvlYn = "F";
 
             int[] grade = getItemGrade(itemId); // 품질, 디자인, 한달 사용 점수
 
             List<String> cards = getItemCardInfo(itemId, price, vendCode, mdCode, brandCode, typeCode);
-            Long cardPrice = Long.valueOf(cards.get(cards.size() - 1));
+            Long cardPrice = Long.valueOf(cards.get(cards.size() - 1)); // 최대 카드 혜택가
             cards = cards.subList(0, cards.size() - 1);
-
             item = new ItemInfo(itemId, itemName, oriPrice, price, order, orderIsShow, cardPrice, images, ReviewScore, grade, tmarvlYn, slCls, cards);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -219,7 +180,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<BestRes> getAllBestItemTmarvlYn(String date, String state) {
-        List<BestRes> res = getAllBestItem(date,state);
+        List<BestRes> res = getAllBestItem(date, state);
         List<BestRes> result = new ArrayList<>();
         for (BestRes best : res) {
             if ("T".equals(best.getTmarvlYn())) {
@@ -233,18 +194,10 @@ public class ItemServiceImpl implements ItemService {
     public int[] getItemGrade(String itemId) {
         String result = "";
         int[] res = new int[3];
-        String uri = "https://item.cjonstyle.com/celebshop/review/rest/itemReviewInfo?itemCode=" + itemId + "&channelCode=50001002";
+        String uri = reviewInfoUriBase1 + itemId + reviewInfoUriBase2;
         try {
-            URL url = new URL(uri);
-            BufferedReader bf;
-            bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-            result = bf.readLine();
-
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
-
-            JSONObject ReviewInfoResult = (JSONObject) jsonObject.get("result");
-            JSONObject ReviewInfo = (JSONObject) ReviewInfoResult.get("reviewSummary");
+            JSONObject api = apiTemplate(uri);
+            JSONObject ReviewInfo = (JSONObject) api.get("reviewSummary");
             for (int i = 0; i < 3; i++) {
                 if (ReviewInfo.get("grade" + (i + 1)) == null) {
                     continue;
@@ -258,22 +211,25 @@ public class ItemServiceImpl implements ItemService {
         return res;
     }
 
+    private JSONObject apiTemplate(String uri) throws IOException, ParseException {
+        URL url = new URL(uri);
+        BufferedReader bf;
+        bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+        String result = bf.readLine();
+
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
+
+        return (JSONObject) jsonObject.get("result");
+    }
+
     // 내일 배송 여부
     public boolean getItemTmarvlYn(String itemId) {
-        String result = "";
         boolean tmarvlYn = false;
-        String uri = "https://display.cjonstyle.com/c/rest/item/" + itemId + "/explainAreaInfo?channelCode=50001002&isMyzone=false&isEmployee=false";
+        String uri = itemInfoUriBase1 + itemId + deliveryInfoUriBase2;
         try {
-            URL url = new URL(uri);
-            BufferedReader bf;
-            bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-            result = bf.readLine();
-
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
-
-            JSONObject DeliveryInfoResult = (JSONObject) jsonObject.get("result");
-            JSONObject DeliveryInfo = (JSONObject) DeliveryInfoResult.get("itemDeliveryInfoTuple");
+            JSONObject api = apiTemplate(uri);
+            JSONObject DeliveryInfo = (JSONObject) api.get("itemDeliveryInfoTuple");
             tmarvlYn = (Boolean) DeliveryInfo.get("tmarvlYn");
         } catch (Exception e) {
             e.printStackTrace();
@@ -283,7 +239,7 @@ public class ItemServiceImpl implements ItemService {
 
     // 카드 혜택 정보 OPEN API
     public List<String> getItemCardInfo(String itemId, Long price, String vendCode, String mdCode, String brandCode, String typeCode) {
-        String uri = "https://display.cjonstyle.com/c/rest/item/" + itemId + "/cardPromotionInfo.json?channelCode=50001002" +
+        String uri = itemInfoUriBase1 + itemId + "/cardPromotionInfo.json?channelCode=50001002" +
                 "&salePrice=" + price +
                 "&mainVenCode=" + vendCode +
                 "&mdCode=" + mdCode +
@@ -291,20 +247,11 @@ public class ItemServiceImpl implements ItemService {
                 "&itemTypeCode=" + typeCode +
                 "&customerPrice=" + price +
                 "&inflowGroupCode=G0001&dispAreaCode=M";
-        String result = "";
         List<String> list = new ArrayList<>();
         DecimalFormat decFormat = new DecimalFormat("###,###");
         try {
-            URL url = new URL(uri);
-            BufferedReader bf;
-            bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-            result = bf.readLine();
-
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
-
-            JSONObject CardInfoResult = (JSONObject) jsonObject.get("result");
-            JSONArray CardInfo = (JSONArray) CardInfoResult.get("cardPromotions");
+            JSONObject api = apiTemplate(uri);
+            JSONArray CardInfo = (JSONArray) api.get("cardPromotions");
             Long maxPrice = price;
             for (int i = 0; i < CardInfo.size(); i++) {
                 JSONObject card = (JSONObject) CardInfo.get(i);
@@ -315,8 +262,8 @@ public class ItemServiceImpl implements ItemService {
                 String discountPrice = card.get("discountPrice").toString();
                 String salePrice = card.get("salePrice").toString();
                 maxPrice = maxPrice > Long.parseLong(salePrice) ? Long.parseLong(salePrice) : maxPrice;
-                discountPrice=decFormat.format(Integer.parseInt(discountPrice));
-                salePrice=decFormat.format(Integer.parseInt(salePrice));
+                discountPrice = decFormat.format(Integer.parseInt(discountPrice));
+                salePrice = decFormat.format(Integer.parseInt(salePrice));
                 String str = cardName + " " + promText + " " + dcVal + discountUnit + " " + salePrice + "원 (" + discountPrice + "원 할인)";
                 list.add(str);
             }
