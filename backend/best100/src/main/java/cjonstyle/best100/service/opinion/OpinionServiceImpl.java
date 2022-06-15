@@ -7,6 +7,7 @@ import cjonstyle.best100.repository.opinion.OpinionRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,32 +29,30 @@ public class OpinionServiceImpl implements OpinionService {
 
     @Override
     public OpinionRes saveOpinion(String itemId, OpinionReq req) {
-        Opinion opinion = repo.save(Opinion.of(itemId, req));
-        return OpinionRes.of(opinion);
+        return OpinionRes.of(repo.save(Opinion.of(itemId, req)));
     }
 
     @Override
     public OpinionRes updateOpinion(Long opinionId, OpinionReq req) {
-        // 중복되는 부분
+        Optional<Opinion> opinion=getOpinion(opinionId, req);
+        OpinionRes dto = OpinionRes.of(opinion.get());
+        dto.setContents(req.getContents());
+        return OpinionRes.of(repo.save(Opinion.of(dto)));
+    }
+
+    private Optional<Opinion> getOpinion(Long opinionId, OpinionReq req) {
         Optional<Opinion> opinion = repo.findById(opinionId);
         if (!opinion.isPresent()) throw new NullPointerException();
         String reqPwd = req.getPwd();
         String oriPwd = opinion.get().getPwd();
         if (!reqPwd.equals(oriPwd)) throw new NullPointerException();
-        OpinionRes dto = OpinionRes.of(opinion.get());
-        dto.setContents(req.getContents());
-        Opinion updateOpinion = repo.save(Opinion.of(dto));
-        return OpinionRes.of(updateOpinion);
+        return opinion;
     }
 
     @Override
     public boolean deleteOpinion(Long opinionId, OpinionReq req) {
         boolean res = false;
-        Optional<Opinion> opinion = repo.findById(opinionId);
-        if (!opinion.isPresent()) throw new NullPointerException();
-        String reqPwd = req.getPwd();
-        String oriPwd = opinion.get().getPwd();
-        if (!reqPwd.equals(oriPwd)) throw new NullPointerException();
+        Optional<Opinion> opinion=getOpinion(opinionId, req);
         try {
             repo.delete(opinion.get());
             res = true;

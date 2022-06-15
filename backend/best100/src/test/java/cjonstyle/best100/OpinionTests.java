@@ -17,12 +17,13 @@ import java.util.List;
 @SpringBootTest
 public class OpinionTests {
     @Autowired
-    OpinionServiceImpl service;
+    private OpinionServiceImpl service;
     @Test
     @Transactional
     public void getAllOpinionTest() {
+        saveOpinionTest();
         String itemId="123";
-        String state="like";
+        String state="like"; //or date
         List<OpinionRes> opinions=service.getAllOpinion(itemId, state);
         Assert.assertEquals(1,opinions.size());
     }
@@ -33,8 +34,7 @@ public class OpinionTests {
         String itemId="123";
         String pwd="pwd";
         String contents="opinion save test";
-        OpinionReq req=new OpinionReq(pwd,contents);
-        OpinionRes opinion=service.saveOpinion(itemId,req);
+        OpinionRes opinion=service.saveOpinion(itemId,new OpinionReq(pwd,contents));
         Assert.assertEquals("opinion save test",opinion.getContents());
     }
 
@@ -43,8 +43,8 @@ public class OpinionTests {
     public void deleteOpinionTest() {
         String pwd="pwd";
         String contents=null;
-        OpinionReq req=new OpinionReq(pwd,contents);
-        boolean res=service.deleteOpinion(7L,req);
+        Long opinionId=7L;
+        boolean res=service.deleteOpinion(opinionId,new OpinionReq(pwd,contents));
         Assert.assertEquals(true,res);
     }
 
@@ -53,8 +53,7 @@ public class OpinionTests {
     public void updateOpinionTest() {
         String pwd="pwd";
         String contents="update test";
-        OpinionReq req=new OpinionReq(pwd,contents);
-        OpinionRes res=service.updateOpinion(7L,req);
+        OpinionRes res=service.updateOpinion(7L,new OpinionReq(pwd,contents));
         Assert.assertEquals("update test",res.getContents());
     }
 }

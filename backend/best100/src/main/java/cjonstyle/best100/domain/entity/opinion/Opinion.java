@@ -33,6 +33,7 @@ public class Opinion {
     private String contents; // 한줄 의견 내용
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    @Column(name = "opinion_date")
     private LocalDate date; // 작성 날짜
 
     @Column(name = "opinion_like")

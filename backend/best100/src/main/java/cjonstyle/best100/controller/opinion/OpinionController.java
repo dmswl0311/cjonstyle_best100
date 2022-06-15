@@ -19,28 +19,60 @@ import java.util.List;
 public class OpinionController {
     private final OpinionServiceImpl service;
 
-    // 상품에 대한 모든 한줄 의견
+    /**
+     * 상품에 대한 모든 한줄 평 조회
+     * @param itemId 상품 아이디
+     * @param state 정렬을 위한 state / like(좋아요가 높은 순), date(최근 날짜순) / 기본값은 date
+     * @return
+     */
     @GetMapping("/{item_id}")
     public ResponseEntity<List<OpinionRes>> getAllOpinion(@PathVariable("item_id") String itemId, @RequestParam("state") String state) {
         List<OpinionRes> res = service.getAllOpinion(itemId, state);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
-    // 상품에 대한 한줄 의견 등록
+    /**
+     * 한줄 평 등록
+     * @param itemId 상품 아이디
+     * @param req
+     * {
+     *     "pwd":"1234",
+     *     "contents":"작성할 내용"
+     * }
+     * @return
+     */
     @PostMapping("/{item_id}")
     public ResponseEntity<OpinionRes> saveOpinion(@PathVariable("item_id") String itemId, @RequestBody OpinionReq req) {
         OpinionRes res = service.saveOpinion(itemId, req);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
-    // 상품에 대한 한줄 의견 수정
+    /**
+     * 한줄 평 수정
+     * @param opinionId 한줄 평 아이디
+     * @param req
+     * {
+     *     "pwd":"1234",
+     *     "contents":"수정할 내용"
+     * }
+     * @return
+     */
     @PatchMapping("/{opinion_id}")
     public ResponseEntity<OpinionRes> updateOpinion(@PathVariable("opinion_id") Long opinionId, @RequestBody OpinionReq req) {
         OpinionRes res = service.updateOpinion(opinionId, req);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
-    // 상품에 대한 한줄 의견 삭제
+    /**
+     * 한줄 평 삭제
+     * @param opinionId 한줄 평 아이디
+     * @param req
+     * {
+     *     "pwd":"1234",
+     *     "contents":null
+     * }
+     * @return
+     */
     @DeleteMapping("/{opinion_id}")
     public ResponseEntity<Boolean> deleteOpinion(@PathVariable("opinion_id") Long opinionId, @RequestBody OpinionReq req) {
         boolean res = service.deleteOpinion(opinionId, req);
@@ -48,10 +80,10 @@ public class OpinionController {
     }
 
     /**
-     * 상품에 대한 좋아요 or 싫어요
-     * expr
-     * like: 좋아요
-     * hate: 싫어요
+     * 한줄 평 좋아요 or 싫어요
+     * @param opinionId 한줄 평 아이디
+     * @param expr 좋아요 like, 싫어요 hate
+     * @return
      */
     @PatchMapping("/expr/{opinion_id}")
     public ResponseEntity<OpinionRes> updateExprOpinion(@PathVariable("opinion_id") Long opinionId, @RequestParam("expr") String expr) {
