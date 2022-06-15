@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -105,9 +106,6 @@ public class ItemServiceImpl implements ItemService {
         day.add(Calendar.DATE , -2);
         String beforeDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(day.getTime());
 
-        log.info("ItemServiceImpl.getAllBestItem.오늘::"+today);
-        log.info("ItemServiceImpl.getAllBestItem.3일전::"+LocalDate.parse(beforeDate));
-
         if(inputDate.isBefore(LocalDate.parse(beforeDate)) || !inputDate.isBefore(today.plusDays(1L))){
             throw new NullPointerException();
         }
@@ -143,8 +141,6 @@ public class ItemServiceImpl implements ItemService {
 //                .orElseThrow(NoSuchElementException::new));
 //
 //        List<BestCh> r=result.stream().filter(x -> x.getDate().equals(today)).collect(Collectors.toList());
-//        System.out.println(r);
-//        System.out.println(value);
         for(BestCh bestCh:result){
             minPrice=Math.min(bestCh.getPrice(),minPrice);
 //            오늘 날짜의 가격이 최저가인지 판단
@@ -182,8 +178,14 @@ public class ItemServiceImpl implements ItemService {
             }
 
             JSONObject detailInfo = (JSONObject) ItemInfoResult.get("detailInfo");
+
+//            JSONObject PriceInfo=(JSONObject) detailInfo.get("itemPrice");
+//            Long oriPrice=(Long) PriceInfo.get("salePrice");
+//            Long price=(Long) PriceInfo.get("discountPrice");
+
             Long oriPrice = (Long) detailInfo.get("slPrc"); // 가격
-            Long price = (Long) detailInfo.get("clpSlPrc");
+            Long price = (Long) detailInfo.get("clpSlPrc"); //고맞가
+
             String slCls = detailInfo.get("slCls").toString(); // 상품 상태 정보
             String itemName = detailInfo.get("dispItemName").toString(); // 상품명
             String vendCode = detailInfo.get("mainVenCd").toString();
@@ -256,6 +258,7 @@ public class ItemServiceImpl implements ItemService {
         return res;
     }
 
+    // 내일 배송 여부
     public boolean getItemTmarvlYn(String itemId) {
         String result = "";
         boolean tmarvlYn = false;
@@ -290,6 +293,7 @@ public class ItemServiceImpl implements ItemService {
                 "&inflowGroupCode=G0001&dispAreaCode=M";
         String result = "";
         List<String> list = new ArrayList<>();
+        DecimalFormat decFormat = new DecimalFormat("###,###");
         try {
             URL url = new URL(uri);
             BufferedReader bf;
@@ -310,8 +314,10 @@ public class ItemServiceImpl implements ItemService {
                 String discountUnit = card.get("discountUnit").toString();
                 String discountPrice = card.get("discountPrice").toString();
                 String salePrice = card.get("salePrice").toString();
-                String str = cardName + " " + promText + " " + dcVal + discountUnit + " " + salePrice + "원 (" + discountPrice + "원 할인)";
                 maxPrice = maxPrice > Long.parseLong(salePrice) ? Long.parseLong(salePrice) : maxPrice;
+                discountPrice=decFormat.format(Integer.parseInt(discountPrice));
+                salePrice=decFormat.format(Integer.parseInt(salePrice));
+                String str = cardName + " " + promText + " " + dcVal + discountUnit + " " + salePrice + "원 (" + discountPrice + "원 할인)";
                 list.add(str);
             }
             list.add(maxPrice.toString());
