@@ -68,6 +68,10 @@ GET /rest/api/best-item
 ```
 GET /rest/api/best-item/{item_id}
 ```
+| Parameter | Type   | Description                                                             |
+|:----------|:-------|:------------------------------------------------------------------------|
+| item_id      | String | 상품 아이디                                          |
+
 #### Response
 ```javascript
 {
@@ -107,6 +111,10 @@ GET /rest/api/best-item/{item_id}
 ```
 GET /rest/api/item-info/{item_id}
 ```
+| Parameter | Type   | Description                                                             |
+|:----------|:-------|:------------------------------------------------------------------------|
+| item_id      | String | 상품 아이디                                          |
+
 #### Response
 ```javascript
 {
@@ -180,6 +188,7 @@ GET /rest/opinion/{item_id}
 | Parameter | Type   | Description                                              |
 |:----------|:-------|:---------------------------------------------------------|
 | state     | String | 정렬을 위한 state / like(좋아요가 높은 순), date(최근 날짜순) / 기본값은 date |
+| item_id      | String | 상품 아이디                                          |
 
 #### Response
 ```javascript
@@ -204,6 +213,10 @@ GET /rest/opinion/{item_id}
 ```
 POST /rest/opinion/{item_id}
 ```
+| Parameter | Type   | Description                                                             |
+|:----------|:-------|:------------------------------------------------------------------------|
+| item_id      | String | 상품 아이디                                          |
+
 #### Request
 ```javascript
 {
@@ -229,6 +242,10 @@ POST /rest/opinion/{item_id}
 ```
 PATCH /rest/opinion/{opinion_id}
 ```
+| Parameter | Type   | Description                                                             |
+|:----------|:-------|:------------------------------------------------------------------------|
+| opinion_id      | String | 한줄 평 아이디                                          |
+
 #### Request
 ```javascript
 {
@@ -254,6 +271,10 @@ PATCH /rest/opinion/{opinion_id}
 ```
 DELETE /rest/opinion/{opinion_id}
 ```
+| Parameter | Type   | Description                                                             |
+|:----------|:-------|:------------------------------------------------------------------------|
+| opinion_id      | String | 한줄 평 아이디                                          |
+
 #### Request
 ```javascript
 {
@@ -276,7 +297,8 @@ PATCH /rest/opinion/expr/{opinion_id}
 | Parameter | Type   | Description                |
 |:----------|:-------|:---------------------------|
 | expr      | String | 좋아요 클릭시 like, 싫어요 클릭시 hate |
-```
+| opinion_id      | String | 한줄 평 아이디                                          |
+
 #### Response
 ```javascript
 {
