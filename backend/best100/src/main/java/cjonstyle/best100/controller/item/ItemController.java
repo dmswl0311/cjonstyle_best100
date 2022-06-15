@@ -20,46 +20,55 @@ import java.util.List;
 public class ItemController {
     private final ItemServiceImpl service;
 
-    //  오늘자 BEST 아이템을 DB에 저장
-    //  하루에 한번만 실행
+    /**
+     * BEST 100 상품을 DB에 저장 (하루에 한번)
+     * @return
+     */
     @PostMapping("/best-item")
     public ResponseEntity<Boolean> saveAllBestItem() {
-        boolean res = service.saveAllBestItem();
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        return new ResponseEntity<>(service.saveAllBestItem(), HttpStatus.OK);
     }
 
     /**
-     * date : 특정일
-     * state:
-     * priceDesc 가격 내림차순 (높은가격순)
-     * priceAsc 가격 오름차순 (낮은가격순)
-     * rank 랭킹순
+     * BEST 100 상품 전체 조회
+     * @param date "yyyy-MM-DD" 형식으로 조회하고싶은 날짜 입력
+     * @param state 정렬을 위한 state / rank(랭킹순), priceDesc(높은가격순), priceAsc(낮은가격순) / 기본값은 rank
+     * @return
      */
     @GetMapping("/best-item")
     public ResponseEntity<List<BestRes>> getAllBestItem(@RequestParam("date") String date,@RequestParam("state") String state) {
-        List<BestRes> res = service.getAllBestItem(date,state);
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        return new ResponseEntity<>(service.getAllBestItem(date,state), HttpStatus.OK);
     }
 
-    // BEST100 순위 및 가격 변동 추이 API
+    /**
+     * 상품 BEST 100 순위 및 가격 변동 추이 (3일간)와 현재 가격 최저가 여부
+     * @param itemId 상품 아이디
+     * @return
+     */
     @GetMapping("/best-item/{item_id}")
     public ResponseEntity<BestChRes> getChangeBestItem(@PathVariable("item_id") String itemId) {
-        BestChRes res = service.getChangeBestItem(itemId);
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        return new ResponseEntity<>(service.getChangeBestItem(itemId), HttpStatus.OK);
     }
 
-    // 상품 정보 API
+    /**
+     * 상품 상세 정보
+     * @param itemId 상품 아이디
+     * @return
+     */
     @GetMapping("/item-info/{item_id}")
     public ResponseEntity<ItemInfo> getItemInfo(@PathVariable("item_id") String itemId) {
-        ItemInfo res = service.getItemInfo(itemId);
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        return new ResponseEntity<>(service.getItemInfo(itemId), HttpStatus.OK);
     }
 
-    // 내일 배송 true
+    /**
+     * 내일 배송상품 조회
+     * @param date "yyyy-MM-DD" 형식으로 조회하고싶은 날짜 입력
+     * @param state 정렬을 위한 state / rank(랭킹순), priceDesc(높은가격순), priceAsc(낮은가격순) / 기본값은 rank
+     * @return
+     */
     @GetMapping("/best-item/tmarvlYn")
     public ResponseEntity<List<BestRes>> getAllBestItemTmarvlYn(@RequestParam("date") String date,@RequestParam("state") String state) {
-        List<BestRes> res = service.getAllBestItemTmarvlYn(date,state);
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        return new ResponseEntity<>(service.getAllBestItemTmarvlYn(date,state), HttpStatus.OK);
     }
 
 
