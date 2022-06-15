@@ -17,15 +17,17 @@
               </h2>
               <h2 v-else>제목없음</h2>
               <h3 class="item-price">
-                <font class="item-price-deco">{{ item.oriPrice }}원</font>
-                {{ item.price }}원
+                <font class="item-price-deco"
+                  >{{ item.oriPrice | comma }}원</font
+                >
+                {{ item.price | comma }}원
               </h3>
               <hr />
               <div v-for="card in item.cards" :key="card">
                 <h5>{{ card }}</h5>
               </div>
               <div class="card-price-box">
-                <h4>카드 최대 혜택가 {{ item.cardPrice }}원</h4>
+                <h4>카드 최대 혜택가 {{ item.cardPrice | comma }}원</h4>
               </div>
               <div class="item-tmarvlYn-box">
                 <div v-if="item.tmarvlYn == 'T'">

@@ -9,7 +9,9 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
-
+Vue.filter("comma", (val) => {
+  return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+});
 new Vue({
   router,
   render: (h) => h(App),

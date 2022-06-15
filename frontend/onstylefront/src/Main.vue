@@ -75,7 +75,7 @@
                 >
                   <strong>{{ item.itemName }}</strong>
                   <div style="text-align: right">
-                    <strong>{{ item.price }}원</strong>
+                    <strong>{{ item.price | comma }}원</strong>
                   </div>
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
@@ -177,7 +177,6 @@ export default {
         this.show = false;
       });
   },
-
   methods: {
     onclickItem(itemId) {
       this.$emit("item:clicked", itemId);
