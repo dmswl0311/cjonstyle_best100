@@ -19,39 +19,61 @@
               <h3 class="item-price">
                 <font class="item-price-deco"
                   >{{ item.oriPrice | comma }}원</font
+                ><span class="item-price-price">
+                  {{ item.price | comma }}원</span
                 >
-                {{ item.price | comma }}원
               </h3>
               <hr />
               <div v-for="card in item.cards" :key="card">
                 <h5>{{ card }}</h5>
               </div>
               <div class="card-price-box">
-                <h4>카드 최대 혜택가 {{ item.cardPrice | comma }}원</h4>
+                <h4>
+                  카드 최대 혜택가
+                  <span class="card-price">{{ item.cardPrice | comma }}</span>
+                  원
+                </h4>
               </div>
-              <div class="item-tmarvlYn-box">
-                <div v-if="item.tmarvlYn == 'T'">
-                  <b-button pill variant="outline-primary">#내일도착</b-button>
-                </div>
-                <div v-else>
-                  <b-button pill variant="outline-secondary"
-                    >#내일도착 불가</b-button
-                  >
-                </div>
+              <div>
+                <b-col>
+                  <b-row>
+                    <div class="item-tmarvlYn-box">
+                      <div v-if="item.itemReviewAvgScore >= 4.5">
+                        <b-button
+                          v-b-tooltip.hover
+                          title="평점이 4.5점 이상이예요"
+                          pill
+                          variant="outline-success"
+                          >#높은평점</b-button
+                        >
+                      </div>
+                      <div v-if="item.tmarvlYn == 'T'">
+                        <b-button
+                          v-b-tooltip.hover
+                          title="내일 도착하는 상품이예요"
+                          pill
+                          variant="outline-primary"
+                          >#내일도착</b-button
+                        >
+                      </div>
+                    </div>
+                  </b-row>
+                  <b-row>
+                    <div class="btn-box">
+                      <img
+                        src="@/assets/images/copylogo.png"
+                        id="clip-btn"
+                        @click="clipboardShare"
+                      />
+                      <img
+                        class="kakao_btn"
+                        src="@/assets/images/kakaobtnlogo.png"
+                        @click="kakaoLink"
+                      />
+                    </div>
+                  </b-row>
+                </b-col>
               </div>
-            </div>
-            <div class="btn-box">
-              <img
-                src="@/assets/images/copylogo.png"
-                id="clip-btn"
-                @click="clipboardShare"
-              />
-
-              <img
-                class="kakao_btn"
-                src="@/assets/images/kakaobtnlogo.png"
-                @click="kakaoLink"
-              />
             </div>
           </b-col>
         </b-row>
@@ -108,7 +130,10 @@
           <b-row>
             <b-col>
               <h4>전체 평점 {{ item.itemReviewAvgScore }}</h4>
-              <b-form-rating :value="item.itemReviewAvgScore"></b-form-rating>
+              <b-form-rating
+                :value="item.itemReviewAvgScore"
+                readonly
+              ></b-form-rating>
             </b-col>
             <b-col>
               <b-row>
@@ -131,7 +156,7 @@
             </b-col>
           </b-row>
         </div>
-        <div>
+        <div class="opinion-full-box">
           <br />
           <h3>상품 한줄 의견</h3>
           <!-- 상품 한줄 의견 CRUD -->
@@ -179,12 +204,14 @@
                     icon="pencil-fill"
                     aria-hidden="true"
                     @click="onModifyOpinion(opinion)"
+                    font-scale="1.3"
                   >
                   </b-icon>
                   <b-icon
                     icon="trash-fill"
                     aria-hidden="true"
                     @click="onClickDeleteOpinion(opinion)"
+                    font-scale="1.3"
                   >
                   </b-icon>
                 </div>
@@ -222,6 +249,7 @@
                           aria-hidden="true"
                           variant="primary"
                           @click="clickLike(opinion)"
+                          font-scale="1.5"
                         ></b-icon>
                         {{ opinion.like }}
                       </p></b-col
@@ -234,6 +262,7 @@
                           aria-hidden="true"
                           variant="danger"
                           @click="clickHate(opinion)"
+                          font-scale="1.5"
                         ></b-icon>
                         {{ opinion.hate }}
                       </p></b-col
@@ -244,6 +273,7 @@
             </div>
           </div>
         </div>
+        <div class="footer"></div>
       </div>
       <!-- <div v-if="item == null">
         <b-jumbotron header="품절된 상품입니다!">
@@ -641,6 +671,9 @@ function getDateFormat(_day) {
   font-size: large;
   color: rgba(128, 128, 128, 0.518);
 }
+.item-price-price {
+  font-size: 2rem;
+}
 .opinion-one {
   padding: 10px;
   margin-top: 2rem;
@@ -652,6 +685,9 @@ function getDateFormat(_day) {
   margin-top: 4rem;
   margin-bottom: 4rem;
   background-color: #fafafa;
+}
+.opinion-full-box {
+  margin-bottom: 5rem;
 }
 .opinion-box {
   padding: 3rem;
@@ -681,10 +717,14 @@ function getDateFormat(_day) {
   text-align: right;
 }
 .item-tmarvlYn-box {
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
 }
 .card-price-box {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
+}
+.card-price {
+  font-size: 2rem;
 }
 .rank-price-chart-box {
   margin-top: 2rem;
@@ -701,9 +741,9 @@ function getDateFormat(_day) {
   height: 3rem;
 }
 .btn-box {
-  margin-top: 1rem;
   display: flex;
-  float: right;
+  justify-content: flex-end;
+  padding-top: 2rem;
 }
 .minPrice-box {
   text-align: center;
@@ -713,5 +753,8 @@ function getDateFormat(_day) {
 }
 .qulity-box {
   font-size: 2rem;
+}
+.footer {
+  padding: 2rem;
 }
 </style>
