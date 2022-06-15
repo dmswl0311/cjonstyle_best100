@@ -62,7 +62,7 @@ public class ItemServiceImpl implements ItemService {
                 String itemId = (String) item.get("itemCd");
                 // 가격
                 JSONObject info = (JSONObject) item.get("rmItempriceInfo");
-                Long price = (Long) info.get("customerPrice");
+                Long price = (Long) info.get("salePrice");
                 // 내일 배송 여부
                 boolean tmarvlYn = (boolean) info.get("tmarvlYn");
                 if (tmarvlYn) best.setTmarvlYn("T");
@@ -183,8 +183,8 @@ public class ItemServiceImpl implements ItemService {
 //            Long oriPrice=(Long) PriceInfo.get("salePrice");
 //            Long price=(Long) PriceInfo.get("discountPrice");
 
-            Long oriPrice = (Long) detailInfo.get("slPrc"); // 가격
-            Long price = (Long) detailInfo.get("clpSlPrc"); //고맞가
+            Long oriPrice = (Long) detailInfo.get("slPrc"); // 가격 채널 코드 변경하지 않아 가격이 다른점 감안
+            Long price = (Long) detailInfo.get("slPrc"); //고맞가
 
             String slCls = detailInfo.get("slCls").toString(); // 상품 상태 정보
             String itemName = detailInfo.get("dispItemName").toString(); // 상품명
