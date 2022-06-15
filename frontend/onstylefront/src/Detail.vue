@@ -41,7 +41,7 @@
                       <div v-if="item.itemReviewAvgScore >= 4.5">
                         <b-button
                           v-b-tooltip.hover
-                          title="평점이 4.5점 이상이예요"
+                          title="평점이 4.5점 이상이에요"
                           pill
                           variant="outline-success"
                           >#높은평점</b-button
@@ -50,7 +50,7 @@
                       <div v-if="item.tmarvlYn == 'T'">
                         <b-button
                           v-b-tooltip.hover
-                          title="내일 도착하는 상품이예요"
+                          title="내일 도착하는 상품이에요"
                           pill
                           variant="outline-primary"
                           >#내일도착</b-button
