@@ -1,12 +1,12 @@
 package cjonstyle.best100.service.item;
 
 
-import cjonstyle.best100.domain.dto.bestItem.BestReq;
-import cjonstyle.best100.domain.entity.bestItem.Best;
 import cjonstyle.best100.domain.dto.bestItem.BestCh;
 import cjonstyle.best100.domain.dto.bestItem.BestChRes;
+import cjonstyle.best100.domain.dto.bestItem.BestReq;
 import cjonstyle.best100.domain.dto.bestItem.BestRes;
 import cjonstyle.best100.domain.dto.item.ItemInfo;
+import cjonstyle.best100.domain.entity.bestItem.Best;
 import cjonstyle.best100.repository.item.ItemRepo;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -21,8 +21,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -93,15 +96,15 @@ public class ItemService {
         //   입력 date가 오늘~3일전에 포함되는지 확인
         Calendar day = Calendar.getInstance();
         day.add(Calendar.DATE, -2);
-        String beforeDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(day.getTime());
+        String beforeDate = new SimpleDateFormat("yyyy-MM-dd").format(day.getTime());
 
         if (inputDate.isBefore(LocalDate.parse(beforeDate)) || !inputDate.isBefore(today.plusDays(1L))) {
             return null;
         }
 
         List<Best> flag = repo.findTopByDate(inputDate);
-        if (flag.size() >= 1) {
-            saveAllBestItem(); // 오늘 날짜에 저장된 DB가 없다면 저장
+        if (flag.size() < 1) {
+            return null; // 해당 날짜에 저장된 DB가 없다면 null
         }
 
         List<Best> bestList;
