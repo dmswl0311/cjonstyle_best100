@@ -2,9 +2,8 @@ package cjonstyle.best100.controller.opinion;
 
 import cjonstyle.best100.domain.dto.opinion.OpinionReq;
 import cjonstyle.best100.domain.dto.opinion.OpinionRes;
-import cjonstyle.best100.service.opinion.OpinionServiceImpl;
+import cjonstyle.best100.service.opinion.OpinionService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +14,8 @@ import java.util.List;
 @RequestMapping("/opinion")
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@Slf4j
 public class OpinionController {
-    private final OpinionServiceImpl service;
+    private final OpinionService service;
 
     /**
      * 상품에 대한 모든 한줄 평 조회

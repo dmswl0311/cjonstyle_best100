@@ -2,7 +2,7 @@ package cjonstyle.best100;
 
 import cjonstyle.best100.domain.dto.opinion.OpinionReq;
 import cjonstyle.best100.domain.dto.opinion.OpinionRes;
-import cjonstyle.best100.service.opinion.OpinionServiceImpl;
+import cjonstyle.best100.service.opinion.OpinionService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +17,7 @@ import java.util.List;
 @SpringBootTest
 public class OpinionTests {
     @Autowired
-    private OpinionServiceImpl service;
+    private OpinionService service;
     @Test
     @Transactional
     public void getAllOpinionTest() {

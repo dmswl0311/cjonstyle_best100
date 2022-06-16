@@ -60,5 +60,8 @@ public class Opinion {
                 .date(LocalDate.now())
                 .build();
     }
+    public boolean isPwdMatch(String pwd){
+        return (this.pwd).equals(pwd);
+    }
 
 }

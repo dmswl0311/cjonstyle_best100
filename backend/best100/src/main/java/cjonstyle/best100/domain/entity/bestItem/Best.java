@@ -1,5 +1,6 @@
 package cjonstyle.best100.domain.entity.bestItem;
 
+import cjonstyle.best100.domain.dto.bestItem.BestReq;
 import cjonstyle.best100.domain.dto.bestItem.BestRes;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
@@ -45,6 +46,19 @@ public class Best {
     private String itemImage;
 
     public static Best of(BestRes best) {
+        return builder()
+                .id(best.getId())
+                .itemId(best.getItemId())
+                .date(LocalDate.now())
+                .price(best.getPrice())
+                .rank(best.getRank())
+                .tmarvlYn(best.getTmarvlYn())
+                .slCls(best.getSlCls())
+                .itemImage(best.getItemImage())
+                .itemName(best.getItemName())
+                .build();
+    }
+    public static Best of(BestReq best) {
         return builder()
                 .id(best.getId())
                 .itemId(best.getItemId())

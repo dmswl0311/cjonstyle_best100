@@ -3,9 +3,8 @@ package cjonstyle.best100.controller.item;
 import cjonstyle.best100.domain.dto.bestItem.BestChRes;
 import cjonstyle.best100.domain.dto.bestItem.BestRes;
 import cjonstyle.best100.domain.dto.item.ItemInfo;
-import cjonstyle.best100.service.item.ItemServiceImpl;
+import cjonstyle.best100.service.item.ItemService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +15,8 @@ import java.util.List;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@Slf4j
 public class ItemController {
-    private final ItemServiceImpl service;
+    private final ItemService service;
 
     /**
      * BEST 100 상품을 DB에 저장 (하루에 한번)

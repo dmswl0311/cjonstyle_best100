@@ -11,6 +11,6 @@ import java.util.List;
 @Builder
 @ToString
 public class BestChRes{
-    List<BestCh> change;
+    private List<BestCh> change;
     private boolean flag;
 }
