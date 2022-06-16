@@ -17,9 +17,7 @@
               </h2>
               <h2 v-else>제목없음</h2>
               <h3 class="item-price">
-                <font class="item-price-deco"
-                  >{{ item.oriPrice | comma }}원</font
-                ><span class="item-price-price">
+                <span class="item-price-price">
                   {{ item.price | comma }}원</span
                 >
               </h3>
@@ -413,58 +411,55 @@ export default {
       .get("http://localhost:8088/rest/api/item-info/" + this.routerId)
       .then((data) => {
         this.item = data.data;
-      })
-      .then(() => {
-        axios
-          .get("http://localhost:8088/rest/api/best-item/" + this.routerId)
-          .then((data) => {
-            const itemData = data.data.change;
-            this.minPriceFlag = data.data.flag;
-            // 그래프에 rank 기입
-            for (let i = 0; i < 3; i++) {
-              let flag = false;
-              for (let j = 0; j < itemData.length; j++) {
-                if (itemData[j].date == this.chartData.labels[i]) {
-                  this.chartData.datasets[0].data.push(itemData[j].rank);
-                  this.chartData2.datasets[0].data.push(itemData[j].price);
+      });
 
-                  if (this.min > itemData[j].rank) this.min = itemData[j].rank;
-                  if (this.max < itemData[j].rank) this.max = itemData[j].rank;
+    axios
+      .get("http://localhost:8088/rest/api/best-item/" + this.routerId)
+      .then((data) => {
+        const itemData = data.data.change;
+        this.minPriceFlag = data.data.flag;
+        // 그래프에 rank 기입
+        for (let i = 0; i < 3; i++) {
+          let flag = false;
+          for (let j = 0; j < itemData.length; j++) {
+            if (itemData[j].date == this.chartData.labels[i]) {
+              this.chartData.datasets[0].data.push(itemData[j].rank);
+              this.chartData2.datasets[0].data.push(itemData[j].price);
 
-                  if (this.maxPrice < itemData[j].price)
-                    this.maxPrice = itemData[j].price;
-                  flag = true;
-                  break;
-                }
-              }
-              if (!flag) {
-                this.chartData.datasets[0].data.push(null);
-                this.chartData2.datasets[0].data.push(null);
-              }
+              if (this.min > itemData[j].rank) this.min = itemData[j].rank;
+              if (this.max < itemData[j].rank) this.max = itemData[j].rank;
+
+              if (this.maxPrice < itemData[j].price)
+                this.maxPrice = itemData[j].price;
+              flag = true;
+              break;
             }
-            this.chartData.datasets[0].data.push(this.min, this.max);
-            this.chartData2.datasets[0].data.push(0, this.maxPrice + 10000);
-          })
-          .then(() => {
-            axios
-              .get(
-                "http://localhost:8088/rest/opinion/" +
-                  this.routerId +
-                  "?state=" +
-                  this.sort
-              )
-              .then((data) => {
-                this.opinions = data.data.map((d) => {
-                  d.readOnly = true;
-                  d.inputPwd = null;
-                  d.precontents = d.contents;
-                  return d;
-                });
-              })
-              .finally(() => {
-                this.show = false;
-              });
-          });
+          }
+          if (!flag) {
+            this.chartData.datasets[0].data.push(null);
+            this.chartData2.datasets[0].data.push(null);
+          }
+        }
+        this.chartData.datasets[0].data.push(this.min, this.max);
+        this.chartData2.datasets[0].data.push(0, this.maxPrice + 10000);
+      });
+    axios
+      .get(
+        "http://localhost:8088/rest/opinion/" +
+          this.routerId +
+          "?state=" +
+          this.sort
+      )
+      .then((data) => {
+        this.opinions = data.data.map((d) => {
+          d.readOnly = true;
+          d.inputPwd = null;
+          d.precontents = d.contents;
+          return d;
+        });
+      })
+      .finally(() => {
+        this.show = false;
       });
   },
   methods: {
@@ -541,6 +536,8 @@ export default {
               .then((data) => {
                 this.opinions = data.data.map((d) => {
                   d.readOnly = true;
+                  d.inputPwd = null;
+                  d.precontents = d.contents;
                   return d;
                 });
               });
@@ -555,7 +552,6 @@ export default {
       // console.log("수정할 내용" + o.contents);
       // console.log("입력한 비밀번호" + o.inputPwd);
       // console.log("클릭한 아이디" + o.id);
-
       if (o.inputPwd != o.pwd) {
         alert("비밀번호가 일치하지 않습니다!");
         // 내용을 원래내용으로 바꿔줘야하는데 어케함;
@@ -595,6 +591,8 @@ export default {
             .then((data) => {
               this.opinions = data.data.map((d) => {
                 d.readOnly = true;
+                d.inputPwd = null;
+                d.precontents = d.contents;
                 return d;
               });
               this.pwd = null;

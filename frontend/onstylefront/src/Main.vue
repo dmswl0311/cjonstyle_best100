@@ -188,7 +188,6 @@ export default {
       else this.tomorrowArriveStatus = "false";
     },
     onClickCard(itemId) {
-      console.log("반응이");
       this.$router.push("/detail/" + itemId);
     },
     onClicktomorrowBtn() {
