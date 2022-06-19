@@ -39,8 +39,8 @@ public class OpinionController {
      *               }
      * @return
      */
-    @PostMapping("/{item_id}")
-    public ResponseEntity<OpinionRes> saveOpinion(@PathVariable("item_id") String itemId, @RequestBody OpinionReq req) {
+    @PostMapping("/{itemId}")
+    public ResponseEntity<OpinionRes> saveOpinion(@PathVariable String itemId, @RequestBody OpinionReq req) {
         return new ResponseEntity<>(service.saveOpinion(itemId, req), HttpStatus.OK);
     }
 
@@ -54,8 +54,8 @@ public class OpinionController {
      *                  }
      * @return
      */
-    @PatchMapping("/{opinion_id}")
-    public ResponseEntity<OpinionRes> updateOpinion(@PathVariable("opinion_id") Long opinionId, @RequestBody OpinionReq req) {
+    @PatchMapping("/{opinionId}")
+    public ResponseEntity<OpinionRes> updateOpinion(@PathVariable Long opinionId, @RequestBody OpinionReq req) {
         return new ResponseEntity<>(service.updateOpinion(opinionId, req), HttpStatus.OK);
     }
 

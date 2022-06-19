@@ -4,6 +4,7 @@ import cjonstyle.best100.domain.dto.opinion.OpinionReq;
 import cjonstyle.best100.domain.dto.opinion.OpinionRes;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.apache.commons.lang3.ObjectUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -63,8 +64,8 @@ public class Opinion {
                 .build();
     }
 
-    public boolean isPwdMatch(String pwd) {
-        return this.pwd.equals(pwd);
+    public boolean isPwdNotMatch(String pwd) {
+        return ObjectUtils.notEqual(this.pwd, pwd);
     }
 
 }

@@ -19,6 +19,7 @@ public class OpinionRes {
     private LocalDate date; // 작성 날짜
     private int like; // 좋아요
     private int hate;  // 싫어요
+
     public static OpinionRes of(Opinion opinion) {
         return builder()
                 .id(opinion.getId())
@@ -29,5 +30,13 @@ public class OpinionRes {
                 .like(opinion.getLike())
                 .hate(opinion.getHate())
                 .build();
+    }
+
+    public void incrementLike(){
+        like++;
+    }
+
+    public void incrementHate(){
+        hate++;
     }
 }
